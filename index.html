@@ -1,0 +1,2593 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Budget Zambuhre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0e11;
+  --bg2: #13151a;
+  --bg3: #1a1d24;
+  --bg4: #22262f;
+  --border: #2a2e38;
+  --gold: #c9a84c;
+  --gold2: #e8c96a;
+  --gold-dim: rgba(201,168,76,0.12);
+  --text: #e8e4dc;
+  --text2: #9a9591;
+  --text3: #5a5650;
+  --green: #4caf82;
+  --red: #c9504c;
+  --blue: #4c82c9;
+  --purple: #9b59b6;
+  --orange: #e8904c;
+  --radius: 10px;
+  --shadow: 0 2px 16px rgba(0,0,0,0.4);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+}
+h1,h2,h3 { font-family: 'DM Serif Display', serif; font-weight: 400; }
+
+/* NAV */
+.nav {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  position: sticky; top: 0; z-index: 100;
+}
+.nav-brand {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.2rem;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+  padding: 16px 20px 16px 0;
+  border-right: 1px solid var(--border);
+  margin-right: 8px;
+  white-space: nowrap;
+}
+.nav-tabs { display: flex; gap: 2px; flex: 1; overflow-x: auto; }
+.nav-tab {
+  padding: 16px 14px;
+  background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--text2); font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem; font-weight: 500; letter-spacing: 0.05em;
+  text-transform: uppercase; cursor: pointer; white-space: nowrap;
+  transition: all 0.15s;
+}
+.nav-tab:hover { color: var(--text); }
+.nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+.nav-month {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 0 8px 16px;
+  border-left: 1px solid var(--border);
+  margin-left: 8px;
+}
+.nav-month button {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); width: 28px; height: 28px; border-radius: 6px;
+  cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.nav-month button:hover { color: var(--gold); border-color: var(--gold); }
+.nav-month .month-label {
+  font-weight: 600; font-size: 0.85rem; color: var(--text); min-width: 90px; text-align: center;
+}
+
+/* MAIN */
+.main { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+/* CARDS */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem;
+  color: var(--text2);
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
+}
+
+/* GRID */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+/* KPI */
+.kpi-val {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.7rem;
+  color: var(--text);
+  line-height: 1;
+}
+.kpi-val.pos { color: var(--green); }
+.kpi-val.neg { color: var(--red); }
+.kpi-label { font-size: 0.75rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 4px; }
+.kpi-sub { font-size: 0.8rem; color: var(--text2); margin-top: 4px; }
+
+/* SECTION HEADERS */
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.2rem;
+  color: var(--text);
+}
+
+/* BUTTONS */
+.btn {
+  padding: 7px 14px; border-radius: 7px; border: none;
+  font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; letter-spacing: 0.03em;
+}
+.btn-gold { background: var(--gold); color: #000; }
+.btn-gold:hover { background: var(--gold2); }
+.btn-ghost { background: var(--bg3); border: 1px solid var(--border); color: var(--text2); }
+.btn-ghost:hover { color: var(--text); border-color: var(--text3); }
+.btn-danger { background: rgba(201,80,76,0.15); border: 1px solid rgba(201,80,76,0.3); color: var(--red); }
+.btn-danger:hover { background: rgba(201,80,76,0.25); }
+.btn-sm { padding: 4px 10px; font-size: 0.75rem; }
+.btn-icon { padding: 5px 8px; }
+
+/* FORM */
+.form-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.form-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 120px; }
+.form-group label { font-size: 0.75rem; color: var(--text2); letter-spacing: 0.04em; text-transform: uppercase; }
+input, select, textarea {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text); border-radius: 7px; padding: 8px 10px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+  transition: border-color 0.15s; width: 100%;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none; border-color: var(--gold);
+}
+input[type="number"] { -moz-appearance: textfield; }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+select option { background: var(--bg3); }
+
+/* TABLE */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th {
+  text-align: left; padding: 10px 12px;
+  color: var(--text3); font-size: 0.72rem;
+  text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+td { padding: 9px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
+tr:hover td { background: var(--bg3); }
+tr:last-child td { border-bottom: none; }
+.td-right { text-align: right; }
+.amount-pos { color: var(--green); font-weight: 500; }
+.amount-neg { color: var(--red); font-weight: 500; }
+
+/* BADGE */
+.badge {
+  display: inline-block; padding: 2px 8px; border-radius: 20px;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em;
+}
+.badge-albin { background: rgba(76,130,201,0.2); color: #7ab3e8; }
+.badge-diana { background: rgba(155,89,182,0.2); color: #c49be8; }
+.badge-gemensam { background: rgba(201,168,76,0.15); color: var(--gold); }
+
+/* PROGRESS BAR */
+.prog-wrap { background: var(--bg3); border-radius: 4px; height: 6px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+.prog-fill.green { background: var(--green); }
+.prog-fill.orange { background: var(--orange); }
+.prog-fill.red { background: var(--red); }
+.prog-fill.gold { background: var(--gold); }
+
+/* ALERT */
+.alert {
+  padding: 10px 16px; border-radius: 8px;
+  font-size: 0.82rem; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.alert-gold { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25); color: var(--gold2); }
+.alert-red { background: rgba(201,80,76,0.1); border: 1px solid rgba(201,80,76,0.25); color: #e88a88; }
+.alert-green { background: rgba(76,175,130,0.1); border: 1px solid rgba(76,175,130,0.25); color: #7acfa9; }
+
+/* DIVIDER */
+.divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+
+/* TABS within page */
+.inner-tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+.inner-tab {
+  padding: 6px 14px; border-radius: 7px;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); font-size: 0.78rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: all 0.15s;
+}
+.inner-tab.active { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; padding: 20px;
+}
+.modal {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 28px; width: 100%; max-width: 560px;
+  max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+}
+.modal-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.3rem; margin-bottom: 20px; color: var(--text);
+}
+.modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
+
+/* COLOR DOT */
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+/* CATEGORY ROW */
+.cat-row { display: grid; grid-template-columns: 1fr 120px 100px 100px 80px; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.cat-row:last-child { border-bottom: none; }
+.cat-name { font-size: 0.85rem; color: var(--text); }
+.cat-budget-input { width: 100%; }
+
+/* GOAL CARD */
+.goal-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px;
+}
+.goal-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+.goal-amounts { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text2); margin-bottom: 8px; }
+
+/* TOOLTIP */
+.info { color: var(--text3); cursor: help; font-size: 0.75rem; margin-left: 4px; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* SICK/VAB PANEL */
+.absence-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.absence-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+.absence-label { font-size: 0.72rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.absence-val { font-size: 1.1rem; font-weight: 600; color: var(--red); }
+.absence-val.yellow { color: var(--orange); }
+.absence-val.green { color: var(--green); }
+
+/* ANNUAL VIEW */
+.annual-row { display: grid; grid-template-columns: 80px repeat(12, 1fr); gap: 2px; font-size: 0.72rem; margin-bottom: 2px; align-items: center; }
+.annual-cell { text-align: right; padding: 5px 4px; border-radius: 3px; }
+.annual-cell.header { color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; }
+.annual-cell.pos { color: var(--green); }
+.annual-cell.neg { color: var(--red); }
+.annual-cell.highlight { background: var(--gold-dim); color: var(--gold); }
+
+/* ANALYSIS CHART */
+.bar-chart { display: flex; flex-direction: column; gap: 8px; }
+.bar-row { display: flex; align-items: center; gap: 10px; }
+.bar-label { font-size: 0.78rem; color: var(--text2); min-width: 130px; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-track { flex: 1; background: var(--bg3); border-radius: 3px; height: 20px; position: relative; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+.bar-val { font-size: 0.75rem; color: var(--text2); min-width: 65px; text-align: right; white-space: nowrap; }
+
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .cat-row { grid-template-columns: 1fr 90px 80px; }
+}
+
+/* SYNC INDICATOR */
+.sync-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  display: inline-block; margin-right: 6px; flex-shrink: 0;
+}
+.sync-dot.green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.sync-dot.orange { background: var(--orange); animation: pulse 1s infinite; }
+.sync-dot.red { background: var(--red); }
+.sync-dot.grey { background: var(--text3); }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+.sync-status {
+  display: flex; align-items: center; padding: 6px 12px;
+  border-left: 1px solid var(--border); margin-left: 8px;
+  font-size: 0.72rem; color: var(--text3); white-space: nowrap; cursor: pointer;
+  transition: color 0.15s;
+}
+.sync-status:hover { color: var(--text2); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">Budget Zambuhre</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showTab('overview')">Översikt</button>
+    <button class="nav-tab" onclick="showTab('transactions')">Transaktioner</button>
+    <button class="nav-tab" onclick="showTab('income')">Inkomster</button>
+    <button class="nav-tab" onclick="showTab('fixed')">Fasta kostnader</button>
+    <button class="nav-tab" onclick="showTab('categories')">Kategorier & Budget</button>
+    <button class="nav-tab" onclick="showTab('goals')">Sparmål</button>
+    <button class="nav-tab" onclick="showTab('annual')">Årsöversikt</button>
+    <button class="nav-tab" onclick="showTab('analysis')">Analys</button>
+    <button class="nav-tab" onclick="showTab('settings')">Inställningar</button>
+  </div>
+  <div class="sync-status" onclick="showTab('settings')" id="syncStatusEl" title="Klicka för synk-inställningar">
+    <span class="sync-dot grey" id="syncDot"></span>
+    <span id="syncText">Ej konfigurerad</span>
+  </div>
+  <div class="nav-month">
+    <button onclick="changeMonth(-1)">‹</button>
+    <span class="month-label" id="monthLabel">–</span>
+    <button onclick="changeMonth(1)">›</button>
+  </div>
+</nav>
+
+<div class="main" id="mainContent"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" style="display:none">
+  <div class="modal" id="modalBox">
+    <div class="modal-title" id="modalTitle"></div>
+    <div id="modalBody"></div>
+    <div class="modal-footer" id="modalFooter"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA CONSTANTS
+// ============================================================
+const MONTHS_SV = ['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December'];
+const SHORT_MONTHS = ['Jan','Feb','Mar','Apr','Maj','Jun','Jul','Aug','Sep','Okt','Nov','Dec'];
+
+// Skattetabell 31 2026, kolumn 1 (standard). Format: [from, to, tax]
+const TABELL31 = [
+  [1,2000,0],[2001,2100,150],[2101,2200,152],[2201,2300,162],[2301,2400,173],
+  [2401,2500,183],[2501,2600,194],[2601,2700,204],[2701,2800,215],[2801,2900,217],
+  [2901,3000,227],[3001,3100,238],[3101,3200,248],[3201,3300,259],[3301,3400,269],
+  [3401,3500,272],[3501,3600,282],[3601,3700,293],[3701,3800,303],[3801,3900,314],
+  [3901,4000,324],[4001,4100,326],[4101,4200,337],[4201,4300,347],[4301,4400,358],
+  [4401,4500,368],[4501,4600,379],[4601,4700,381],[4701,4800,391],[4801,4900,402],
+  [4901,5000,412],[5001,5100,422],[5101,5200,432],[5201,5300,442],[5301,5400,444],
+  [5401,5500,454],[5501,5600,464],[5601,5700,474],[5701,5800,484],[5801,5900,494],
+  [5901,6000,496],[6001,6100,506],[6101,6200,516],[6201,6300,526],[6301,6400,536],
+  [6401,6500,546],[6501,6600,548],[6601,6700,558],[6701,6800,568],[6801,6900,578],
+  [6901,7000,588],[7001,7100,598],[7101,7200,600],[7201,7300,610],[7301,7400,624],
+  [7401,7500,644],[7501,7600,663],[7601,7700,683],[7701,7800,702],[7801,7900,722],
+  [7901,8000,741],[8001,8100,760],[8101,8200,780],[8201,8300,799],[8301,8400,819],
+  [8401,8500,838],[8501,8600,857],[8601,8700,877],[8701,8800,896],[8801,8900,916],
+  [8901,9000,935],[9001,9100,954],[9101,9200,974],[9201,9300,993],[9301,9400,1013],
+  [9401,9500,1032],[9501,9600,1051],[9601,9700,1071],[9701,9800,1090],[9801,9900,1110],
+  [9901,10000,1129],[10001,10100,1148],[10101,10200,1168],[10201,10300,1187],[10301,10400,1207],
+  [10401,10500,1226],[10501,10600,1245],[10601,10700,1265],[10701,10800,1284],[10801,10900,1304],
+  [10901,11000,1323],[11001,11100,1342],[11101,11200,1362],[11201,11300,1381],[11301,11400,1401],
+  [11401,11500,1420],[11501,11600,1439],[11601,11700,1459],[11701,11800,1478],[11801,11900,1498],
+  [11901,12000,1517],[12001,12100,1537],[12101,12200,1556],[12201,12300,1575],[12301,12400,1595],
+  [12401,12500,1614],[12501,12600,1634],[12601,12700,1653],[12701,12800,1672],[12801,12900,1692],
+  [12901,13000,1711],[13001,13100,1731],[13101,13200,1750],[13201,13300,1769],[13301,13400,1789],
+  [13401,13500,1808],[13501,13600,1828],[13601,13700,1847],[13701,13800,1866],[13801,13900,1885],
+  [13901,14000,1904],[14001,14100,1922],[14101,14200,1941],[14201,14300,1960],[14301,14400,1978],
+  [14401,14500,1997],[14501,14600,2016],[14601,14700,2034],[14701,14800,2053],[14801,14900,2072],
+  [14901,15000,2090],[15001,15100,2109],[15101,15200,2128],[15201,15300,2147],[15301,15400,2165],
+  [15401,15500,2184],[15501,15600,2203],[15601,15700,2221],[15701,15800,2240],[15801,15900,2259],
+  [15901,16000,2278],[16001,16100,2301],[16101,16200,2323],[16201,16300,2346],[16301,16400,2369],
+  [16401,16500,2392],[16501,16600,2415],[16601,16700,2437],[16701,16800,2460],[16801,16900,2483],
+  [16901,17000,2506],[17001,17100,2529],[17101,17200,2551],[17201,17300,2574],[17301,17400,2597],
+  [17401,17500,2620],[17501,17600,2643],[17601,17700,2665],[17701,17800,2688],[17801,17900,2711],
+  [17901,18000,2734],[18001,18100,2757],[18101,18200,2779],[18201,18300,2802],[18301,18400,2825],
+  [18401,18500,2848],[18501,18600,2871],[18601,18700,2893],[18701,18800,2916],[18801,18900,2939],
+  [18901,19000,2962],[19001,19100,2985],[19101,19200,3007],[19201,19300,3030],[19301,19400,3053],
+  [19401,19500,3076],[19501,19600,3099],[19601,19700,3121],[19701,19800,3144],[19801,19900,3167],
+  [19901,20000,3190],[20001,20200,3235],[20201,20400,3281],[20401,20600,3327],[20601,20800,3372],
+  [20801,21000,3418],[21001,21200,3463],[21201,21400,3509],[21401,21600,3555],[21601,21800,3600],
+  [21801,22000,3646],[22001,22200,3691],[22201,22400,3737],[22401,22600,3783],[22601,22800,3828],
+  [22801,23000,3874],[23001,23200,3921],[23201,23400,3968],[23401,23600,4015],[23601,23800,4063],
+  [23801,24000,4110],[24001,24200,4157],[24201,24400,4204],[24401,24600,4252],[24601,24800,4299],
+  [24801,25000,4346],[25001,25200,4393],[25201,25400,4441],[25401,25600,4488],[25601,25800,4535],
+  [25801,26000,4582],[26001,26200,4630],[26201,26400,4677],[26401,26600,4724],[26601,26800,4771],
+  [26801,27000,4819],[27001,27200,4866],[27201,27400,4913],[27401,27600,4960],[27601,27800,5008],
+  [27801,28000,5055],[28001,28200,5102],[28201,28400,5149],[28401,28600,5197],[28601,28800,5244],
+  [28801,29000,5291],[29001,29200,5338],[29201,29400,5386],[29401,29600,5433],[29601,29800,5480],
+  [29801,30000,5527],[30001,30200,5575],[30201,30400,5622],[30401,30600,5669],[30601,30800,5716],
+  [30801,31000,5764],[31001,31200,5811],[31201,31400,5858],[31401,31600,5905],[31601,31800,5953],
+  [31801,32000,6000],[32001,32200,6047],[32201,32400,6094],[32401,32600,6142],[32601,32800,6189],
+  [32801,33000,6236],[33001,33200,6283],[33201,33400,6331],[33401,33600,6378],[33601,33800,6425],
+  [33801,34000,6472],[34001,34200,6520],[34201,34400,6567],[34401,34600,6614],[34601,34800,6661],
+  [34801,35000,6709],[35001,35200,6756],[35201,35400,6803],[35401,35600,6850],[35601,35800,6898],
+  [35801,36000,6945],[36001,36200,6992],[36201,36400,7039],[36401,36600,7087],[36601,36800,7134],
+  [36801,37000,7181],[37001,37200,7228],[37201,37400,7276],[37401,37600,7323],[37601,37800,7370],
+  [37801,38000,7417],[38001,38200,7465],[38201,38400,7512],[38401,38600,7559],[38601,38800,7606],
+  [38801,39000,7654],[39001,39200,7701],[39201,39400,7748],[39401,39600,7795],[39601,39800,7842],
+  [39801,40000,7889],[40001,40200,7936],[40201,40400,7983],[40401,40600,8030],[40601,40800,8077],
+  [40801,41000,8124],[41001,41200,8171],[41201,41400,8218],[41401,41600,8265],[41601,41800,8312],
+  [41801,42000,8359],[42001,42200,8406],[42201,42400,8453],[42401,42600,8500],[42601,42800,8547],
+  [42801,43000,8594],[43001,43200,8641],[43201,43400,8688],[43401,43600,8735],[43601,43800,8782],
+  [43801,44000,8829],[44001,44200,8876],[44201,44400,8923],[44401,44600,8970],[44601,44800,9017],
+  [44801,45000,9064],[45001,45200,9111],[45201,45400,9158],[45401,45600,9205],[45601,45800,9252],
+  [45801,46000,9299],[46001,46200,9346],[46201,46400,9393],[46401,46600,9440],[46601,46800,9487],
+  [46801,47000,9534],[47001,47200,9581],[47201,47400,9628],[47401,47600,9675],[47601,47800,9722],
+  [47801,48000,9769],[48001,99999,9816]
+];
+
+// Kostförmån 2026 (Skatteverket + Visita/Unionen)
+const KOSTFORMAN_SCHABLONVARDE = 124; // kr per lunch/middag (2026)
+const KOSTFORMAN_KOSTAVDRAG = 55;     // kr employee pays per day (Visita)
+const KOSTFORMAN_SKATTEPLIKTIG = KOSTFORMAN_SCHABLONVARDE - KOSTFORMAN_KOSTAVDRAG; // 69 kr/day
+
+// FK/SGI constants 2026
+const PRISBASBELOPP_2026 = 59200;
+const SGI_TAK = PRISBASBELOPP_2026 * 10; // 592000/year
+const MAX_SGI_DAILY = SGI_TAK / 365;
+const SJUKPENNING_RATE = 0.80;
+const VAB_RATE = 0.80;
+const FK_KARENS = 0.20; // karensavdrag = 20% of weekly salary
+const SICK_EMPLOYER_RATE = 0.80; // day 2-14
+
+// Default working days per month
+const WORK_DAYS_PER_MONTH = 22;
+
+const CAT_COLORS = {
+  'Matvaror': '#4caf82','Äta ute': '#e8904c','Alkohol': '#c97a4c',
+  'Bil': '#4c82c9','Parkering': '#6e9fd4','Taxi/Uber/Bolt': '#8bb8e8','SL/Kollektivt': '#b0cfe8',
+  'Inredning & Möbler': '#9b59b6','Hushållsvaror': '#b97de0',
+  'Apotek & Medicin': '#e84c82','Tandvård': '#e87ab0','Träning & Hälsa': '#e8a0c0',
+  'Barn': '#f0c040','Jack': '#f0a040',
+  'Streaming': '#4ce8d0','Mjukvara & Appar': '#4cd0e8','Gaming': '#4cb8e8',
+  'Kläder Albin': '#4c82c9','Kläder Diana': '#9b59b6',
+  'Presenter': '#e8d04c','Upplevelser & Event': '#e8b04c',
+  'Albin Personligt': '#4c7ab0','Diana Personligt': '#8a5ba0',
+  'Övrigt': '#666'
+};
+
+const ALL_CATEGORIES = Object.keys(CAT_COLORS);
+
+const CAT_GROUPS = {
+  'Mat & Dryck': ['Matvaror','Äta ute','Alkohol'],
+  'Transport': ['Bil','Parkering','Taxi/Uber/Bolt','SL/Kollektivt'],
+  'Hem': ['Inredning & Möbler','Hushållsvarors'],
+  'Hälsa': ['Apotek & Medicin','Tandvård','Träning & Hälsa'],
+  'Barn & Djur': ['Barn','Jack'],
+  'IT & Prenumerationer': ['Streaming','Mjukvara & Appar','Gaming'],
+  'Kläder & Skönhet': ['Kläder Albin','Kläder Diana'],
+  'Presenter & Upplevelser': ['Presenter','Upplevelser & Event'],
+  'Personligt': ['Albin Personligt','Diana Personligt'],
+  'Övrigt': ['Övrigt']
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let state = {
+  currentMonth: new Date().getMonth(),
+  currentYear: new Date().getFullYear(),
+  transactions: [],    // {id, date, category, amount, person, description, isCCpending}
+  income: {},          // {YYYY-MM: [{id, label, amount, gross, person, useGross, kostformanDays, mealType}]}
+  fixedCosts: {},      // {YYYY-MM: [{id, group, label, amount}]}
+  budgets: {},         // {YYYY-MM: {category: amount}}
+  goals: [],           // [{id, name, target, saved, color, deadline, monthlyTarget}]
+  plannedExpenses: [], // [{id, name, amount, month, year, category, notes}]
+  recurringTx: [],     // [{id, label, category, amount, person, description, dayOfMonth}]
+  settings: {
+    albinCC: { closeDay: 26, chargeDay: 1 },  // billing cycle
+    dianaCC: { closeDay: 31, chargeDay: 1 },
+    taxRefunds: [],  // [{year, month, expected, actual}]
+    albinSGI: 480000,
+    dianaSGI: 480000,
+    workDaysPerMonth: 22
+  },
+  absences: {}  // {YYYY-MM: {albin: {vab:0,sick:0,parent:0}, diana: {vab:0,sick:0,parent:0}}}
+};
+
+// ============================================================
+// CLOUD SYNC — JSONBin.io
+// ============================================================
+// Config stored in localStorage (device-local, never synced)
+const SYNC_CFG_KEY = 'bz_sync_cfg';
+let syncCfg = { binId: '', apiKey: '', enabled: false };
+let syncState = 'unconfigured'; // unconfigured | syncing | ok | error
+let saveDebounceTimer = null;
+let pollTimer = null;
+let lastRemoteVersion = null;
+let isSaving = false;
+
+function loadSyncCfg() {
+  try {
+    const d = localStorage.getItem(SYNC_CFG_KEY);
+    if (d) syncCfg = JSON.parse(d);
+  } catch(e) {}
+}
+
+function saveSyncCfg() {
+  try { localStorage.setItem(SYNC_CFG_KEY, JSON.stringify(syncCfg)); } catch(e) {}
+}
+
+function setSyncStatus(status, text) {
+  syncState = status;
+  const dot = document.getElementById('syncDot');
+  const txt = document.getElementById('syncText');
+  if (!dot || !txt) return;
+  dot.className = 'sync-dot';
+  if (status === 'ok') { dot.classList.add('green'); txt.textContent = text || 'Synkad'; }
+  else if (status === 'syncing') { dot.classList.add('orange'); txt.textContent = text || 'Synkar…'; }
+  else if (status === 'error') { dot.classList.add('red'); txt.textContent = text || 'Synkfel'; }
+  else { dot.classList.add('grey'); txt.textContent = text || 'Ej konfigurerad'; }
+}
+
+// Serialize only data (not UI state like currentMonth/Year)
+function serializeData() {
+  const { transactions, income, fixedCosts, budgets, goals,
+          plannedExpenses, recurringTx, settings, absences } = state;
+  return { transactions, income, fixedCosts, budgets, goals,
+           plannedExpenses, recurringTx, settings, absences,
+           _lastSaved: new Date().toISOString() };
+}
+
+function mergeRemoteData(remote) {
+  const keys = ['transactions','income','fixedCosts','budgets','goals',
+                 'plannedExpenses','recurringTx','settings','absences'];
+  keys.forEach(k => { if (remote[k] !== undefined) state[k] = remote[k]; });
+  initDefaults();
+}
+
+// Save to JSONBin (debounced 1.5s)
+function save() {
+  // Always write to localStorage as fallback
+  try { localStorage.setItem('bz_v2', JSON.stringify(state)); } catch(e) {}
+
+  if (!syncCfg.enabled || !syncCfg.binId || !syncCfg.apiKey) return;
+
+  clearTimeout(saveDebounceTimer);
+  saveDebounceTimer = setTimeout(pushToCloud, 1500);
+}
+
+async function pushToCloud() {
+  if (isSaving) return;
+  isSaving = true;
+  setSyncStatus('syncing', 'Sparar…');
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${syncCfg.binId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': syncCfg.apiKey,
+        'X-Bin-Versioning': 'false'
+      },
+      body: JSON.stringify(serializeData())
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    lastRemoteVersion = json.metadata?.version;
+    setSyncStatus('ok', 'Synkad ✓');
+  } catch(e) {
+    setSyncStatus('error', 'Synkfel – försöker igen');
+    console.error('Push failed:', e);
+  } finally {
+    isSaving = false;
+  }
+}
+
+async function pullFromCloud(silent) {
+  if (!syncCfg.enabled || !syncCfg.binId || !syncCfg.apiKey) return;
+  if (!silent) setSyncStatus('syncing', 'Hämtar…');
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${syncCfg.binId}/latest`, {
+      headers: { 'X-Master-Key': syncCfg.apiKey }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    const remote = json.record;
+    // Only apply if actually different (avoid clobbering mid-edit)
+    const remoteVer = json.metadata?.version;
+    if (remoteVer !== lastRemoteVersion || !lastRemoteVersion) {
+      lastRemoteVersion = remoteVer;
+      mergeRemoteData(remote);
+      try { localStorage.setItem('bz_v2', JSON.stringify(state)); } catch(e) {}
+      render();
+    }
+    setSyncStatus('ok', 'Synkad ✓');
+  } catch(e) {
+    setSyncStatus('error', 'Hämtningsfel');
+    console.error('Pull failed:', e);
+  }
+}
+
+function startPolling() {
+  clearInterval(pollTimer);
+  if (!syncCfg.enabled) return;
+  // Poll every 30 seconds
+  pollTimer = setInterval(() => pullFromCloud(true), 30000);
+}
+
+async function initSync() {
+  loadSyncCfg();
+  if (!syncCfg.enabled || !syncCfg.binId || !syncCfg.apiKey) {
+    setSyncStatus('unconfigured', 'Ej konfigurerad');
+    return;
+  }
+  setSyncStatus('syncing', 'Ansluter…');
+  await pullFromCloud(false);
+  startPolling();
+}
+
+async function createNewBin(apiKey) {
+  // Creates a new JSONBin bin and returns the bin ID
+  setSyncStatus('syncing', 'Skapar databas…');
+  try {
+    const res = await fetch('https://api.jsonbin.io/v3/b', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': apiKey,
+        'X-Bin-Name': 'budget-zambuhre',
+        'X-Bin-Private': 'true'
+      },
+      body: JSON.stringify(serializeData())
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+    const json = await res.json();
+    return json.metadata?.id || null;
+  } catch(e) {
+    setSyncStatus('error', 'Kunde inte skapa databas');
+    throw e;
+  }
+}
+
+// ============================================================
+// LOCAL FALLBACK LOAD
+// ============================================================
+function load() {
+  try {
+    const d = localStorage.getItem('bz_v2');
+    if (d) { state = Object.assign(state, JSON.parse(d)); }
+  } catch(e) {}
+  initDefaults();
+}
+function initDefaults() {
+  // Ensure settings exist
+  if (!state.settings.albinCC) state.settings.albinCC = { closeDay: 26, chargeDay: 1 };
+  if (!state.settings.dianaCC) state.settings.dianaCC = { closeDay: 31, chargeDay: 1 };
+  if (!state.settings.taxRefunds) state.settings.taxRefunds = [];
+  if (!state.settings.albinSGI) state.settings.albinSGI = 480000;
+  if (!state.settings.dianaSGI) state.settings.dianaSGI = 480000;
+  if (!state.settings.workDaysPerMonth) state.settings.workDaysPerMonth = 22;
+  if (!state.recurringTx) state.recurringTx = [];
+  if (!state.plannedExpenses) state.plannedExpenses = [];
+  if (!state.absences) state.absences = {};
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function fmtKey(y, m) { return `${y}-${String(m+1).padStart(2,'0')}`; }
+function fmtMoney(n, showSign) {
+  const abs = Math.abs(Math.round(n));
+  const str = abs.toLocaleString('sv-SE') + ' kr';
+  if (showSign && n > 0) return '+' + str;
+  if (showSign && n < 0) return '−' + str;
+  return (n < 0 ? '−' : '') + str;
+}
+function parseNum(s) { return parseFloat(String(s).replace(/\s/g,'').replace(',','.')) || 0; }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function getMonthKey() { return fmtKey(state.currentYear, state.currentMonth); }
+function prevMonthKey(y, m) {
+  if (m === 0) return fmtKey(y-1, 11);
+  return fmtKey(y, m-1);
+}
+
+// Skattetabell 31 lookup
+function lookupTax31(grossAmount) {
+  const g = Math.round(grossAmount);
+  for (const [from, to, tax] of TABELL31) {
+    if (g >= from && g <= to) return tax;
+  }
+  // Above table max: ~9816 + ~20% statlig (approx)
+  return Math.round(9816 + (g - 48000) * 0.5);
+}
+
+// Gross → Net calculator with kostförmån
+function calcNet(gross, kostformanDays, mealType) {
+  if (!gross || gross <= 0) return { net: 0, tax: 0, forman: 0 };
+  // Kostförmån: skattepliktig del added to gross for tax calculation
+  const dailyForman = mealType === 'lunch' ? KOSTFORMAN_SKATTEPLIKTIG : 0;
+  const monthlyForman = dailyForman * (kostformanDays || 0);
+  const taxableGross = gross + monthlyForman;
+  const tax = lookupTax31(taxableGross);
+  // Net = gross - tax (employee doesn't "receive" the förmån, they pay the kostavdrag from net)
+  const kostavdragTotal = KOSTFORMAN_KOSTAVDRAG * (kostformanDays || 0);
+  const net = gross - tax - kostavdragTotal;
+  return { net: Math.round(net), tax, forman: monthlyForman, kostavdrag: kostavdragTotal };
+}
+
+// Absence impact on salary
+// Visita semestertillägg: 400 kr per paid vacation day (on top of regular salary)
+const SEMESTERTILLAGG_PER_DAY = 400;
+
+function calcAbsenceImpact(grossMonthly, absences, sgi) {
+  const { vab, sick, parent, vacation, unpaidVacation } = absences;
+  const workDays = state.settings.workDaysPerMonth;
+  const dailyGross = grossMonthly / workDays;
+  let totalDeduction = 0;
+  let totalFK = 0;
+  let semesterBonus = 0;
+
+  // Paid vacation (semester): keep full daily pay + semestertillägg 400 kr/day (Visita)
+  if (vacation > 0) {
+    semesterBonus = vacation * SEMESTERTILLAGG_PER_DAY;
+  }
+
+  // Unpaid vacation: lose full day gross, no replacement
+  if (unpaidVacation > 0) {
+    totalDeduction += dailyGross * unpaidVacation;
+  }
+
+  // Karensavdrag: day 1 of sick leave = full day lost
+  if (sick > 0) {
+    totalDeduction += dailyGross; // Day 1: full day lost
+    const employerSickDays = Math.min(sick - 1, 13);
+    if (employerSickDays > 0) {
+      totalDeduction += dailyGross * employerSickDays * (1 - SICK_EMPLOYER_RATE);
+    }
+    const fkDays = Math.max(sick - 14, 0);
+    if (fkDays > 0) {
+      const dailySGI = sgi / 365;
+      totalFK += Math.min(dailySGI * SJUKPENNING_RATE, MAX_SGI_DAILY * SJUKPENNING_RATE) * fkDays;
+      totalDeduction += dailyGross * fkDays;
+    }
+  }
+
+  // VAB: lose day pay, get FK benefit
+  if (vab > 0) {
+    totalDeduction += dailyGross * vab;
+    const dailySGI = sgi / 365;
+    totalFK += Math.min(dailySGI * VAB_RATE, MAX_SGI_DAILY * VAB_RATE) * vab;
+  }
+
+  // Föräldraledighet
+  if (parent > 0) {
+    totalDeduction += dailyGross * parent;
+    const dailySGI = sgi / 365;
+    totalFK += Math.min(dailySGI * 0.775, MAX_SGI_DAILY * 0.775) * parent;
+  }
+
+  return { deduction: Math.round(totalDeduction), fk: Math.round(totalFK), semesterBonus: Math.round(semesterBonus) };
+}
+
+// Get income for month with carry-forward
+function getMonthIncome(y, m) {
+  const key = fmtKey(y, m);
+  if (state.income[key]) return state.income[key];
+  // Carry forward from previous month
+  if (m === 0 && y === 2025) return getDefaultIncome();
+  const prev = m === 0 ? getMonthIncome(y-1, 11) : getMonthIncome(y, m-1);
+  return JSON.parse(JSON.stringify(prev)).map(r => ({ ...r, id: uid() }));
+}
+function getDefaultIncome() {
+  return [
+    { id: uid(), label: 'Albin lön brutto', amount: 44000, gross: 44000, person: 'Albin', useGross: true, kostformanDays: 22, mealType: 'lunch' },
+    { id: uid(), label: 'Diana lön brutto', amount: 46000, gross: 46000, person: 'Diana', useGross: true, kostformanDays: 22, mealType: 'lunch' },
+    { id: uid(), label: 'Barnbidrag Lucas', amount: 1250, gross: 1250, person: 'Gemensamt', useGross: false, kostformanDays: 0, mealType: 'none' },
+    { id: uid(), label: 'Flerbarnstillägg', amount: 0, gross: 0, person: 'Gemensamt', useGross: false, kostformanDays: 0, mealType: 'none' },
+    { id: uid(), label: 'Föräldrapenning / VAB FK', amount: 0, gross: 0, person: 'Gemensamt', useGross: false, kostformanDays: 0, mealType: 'none' },
+    { id: uid(), label: 'Skatteåterbäring', amount: 0, gross: 0, person: 'Gemensamt', useGross: false, kostformanDays: 0, mealType: 'none' },
+    { id: uid(), label: 'Övrig inkomst', amount: 0, gross: 0, person: 'Gemensamt', useGross: false, kostformanDays: 0, mealType: 'none' },
+  ];
+}
+
+// Get fixed costs for month with carry-forward
+function getMonthFixed(y, m) {
+  const key = fmtKey(y, m);
+  if (state.fixedCosts[key]) return state.fixedCosts[key];
+  if (m === 0 && y === 2025) return getDefaultFixed();
+  const prev = m === 0 ? getMonthFixed(y-1, 11) : getMonthFixed(y, m-1);
+  return JSON.parse(JSON.stringify(prev)).map(r => ({ ...r, id: uid() }));
+}
+function getDefaultFixed() {
+  const rows = (group, items) => items.map(([label, amount]) => ({ id: uid(), group, label, amount }));
+  return [
+    ...rows('Boende', [
+      ['Bolån 1 – Ränta', 0],['Bolån 1 – Amortering', 0],
+      ['Bolån 2 – Ränta', 0],
+      ['Bolån 3 – Ränta', 0],['Bolån 3 – Amortering', 0],
+      ['BRF Avgift', 0],['Försäkring (Trygg-Hansa)', 0],['Parkering (Aimo)', 0],
+    ]),
+    ...rows('Övriga fasta', [
+      ['Barnomsorg (Förskoleavgift)', 0],['Kommunikation (Telefoner)', 0],
+      ['Fackavgift (Unionen)', 0],['Media & TV / Streaming', 0],
+      ['Städning', 0],['SL-kort', 0],
+    ]),
+    ...rows('Sparande & Skuld', [
+      ['Avanza Fonder', 3000],['SEB Fonder Diana', 2000],
+      ['Barnsparande Lucas', 1000],['Buffert Kontant', 5000],
+      ['Studielån (CSN)', 0],['Tjänstepension (ITP)', 0],
+    ]),
+  ];
+}
+
+// Get budgets for month (with carry-forward)
+function getMonthBudgets(y, m) {
+  const key = fmtKey(y, m);
+  if (state.budgets[key]) return state.budgets[key];
+  if (m === 0 && y === 2025) return {};
+  const prevKey = m === 0 ? fmtKey(y-1, 11) : fmtKey(y, m-1);
+  return state.budgets[prevKey] ? { ...state.budgets[prevKey] } : {};
+}
+
+// Get transactions for display month (accounting for CC billing cycles)
+function getDisplayTransactions(y, m) {
+  return state.transactions.filter(tx => {
+    const d = new Date(tx.date);
+    if (!tx.ccType) {
+      // cash / debit: show in actual month
+      return d.getFullYear() === y && d.getMonth() === m;
+    }
+    // CC: shift to effective month
+    const effDate = getCCEffectiveMonth(tx.date, tx.ccType);
+    return effDate.year === y && effDate.month === m;
+  });
+}
+
+function getCCEffectiveMonth(dateStr, ccType) {
+  const d = new Date(dateStr);
+  const day = d.getDate();
+  const month = d.getMonth();
+  const year = d.getFullYear();
+  const settings = ccType === 'Albin' ? state.settings.albinCC : state.settings.dianaCC;
+  const closeDay = settings.closeDay;
+  if (day > closeDay) {
+    // After close → next month
+    if (month === 11) return { year: year+1, month: 0 };
+    return { year, month: month+1 };
+  }
+  return { year, month };
+}
+
+function getTotalIncome(y, m) {
+  const rows = getMonthIncome(y, m);
+  const abs = getAbsences(y, m);
+  let total = 0;
+  rows.forEach(r => {
+    if (r.useGross) {
+      // If manual net override is set, use that directly
+      if (r.manualNet && r.manualNet > 0) {
+        total += r.manualNet;
+        return;
+      }
+      const absP = r.person === 'Albin' ? abs.albin : (r.person === 'Diana' ? abs.diana : { vab:0, sick:0, parent:0, vacation:0, unpaidVacation:0 });
+      const sgi = r.person === 'Albin' ? state.settings.albinSGI : state.settings.dianaSGI;
+      const impact = calcAbsenceImpact(r.gross || r.amount, absP, sgi);
+      const { net } = calcNet(r.gross || r.amount, r.kostformanDays, r.mealType);
+      total += net - impact.deduction + impact.fk + impact.semesterBonus;
+    } else {
+      total += r.amount || 0;
+    }
+  });
+  return Math.round(total);
+}
+
+function getTotalFixed(y, m) {
+  return getMonthFixed(y, m).reduce((s, r) => s + (r.amount || 0), 0) + getKostavdragTotal(y, m);
+}
+
+// Auto-calculated kostavdrag from income rows
+function getKostavdragTotal(y, m) {
+  const rows = getMonthIncome(y, m);
+  return rows.reduce((s, r) => {
+    if (r.useGross && r.kostformanDays > 0) return s + KOSTFORMAN_KOSTAVDRAG * r.kostformanDays;
+    return s;
+  }, 0);
+}
+
+function getSpentByCategory(y, m) {
+  const txs = getDisplayTransactions(y, m);
+  const out = {};
+  txs.forEach(tx => {
+    if (!out[tx.category]) out[tx.category] = 0;
+    out[tx.category] += tx.amount;
+  });
+  return out;
+}
+
+function getTotalFlexible(y, m) {
+  return Object.values(getSpentByCategory(y, m)).reduce((s, v) => s + v, 0);
+}
+
+function getAbsences(y, m) {
+  const key = fmtKey(y, m);
+  if (!state.absences[key]) return {
+    albin: {vab:0,sick:0,parent:0,vacation:0,unpaidVacation:0},
+    diana: {vab:0,sick:0,parent:0,vacation:0,unpaidVacation:0}
+  };
+  // Backfill missing fields
+  const a = state.absences[key];
+  if (!a.albin.vacation) a.albin.vacation = 0;
+  if (!a.albin.unpaidVacation) a.albin.unpaidVacation = 0;
+  if (!a.diana.vacation) a.diana.vacation = 0;
+  if (!a.diana.unpaidVacation) a.diana.unpaidVacation = 0;
+  return a;
+}
+
+// CC pending amount (transactions entered this month but effective next month)
+function getCCPending(y, m) {
+  const d = new Date(y, m, 1);
+  let total = 0;
+  state.transactions.forEach(tx => {
+    if (!tx.ccType) return;
+    const txDate = new Date(tx.date);
+    if (txDate.getFullYear() !== y || txDate.getMonth() !== m) return;
+    const eff = getCCEffectiveMonth(tx.date, tx.ccType);
+    if (eff.year !== y || eff.month !== m) total += tx.amount;
+  });
+  return total;
+}
+
+// Buffer from settings
+function getBuffer() {
+  return state.settings.bufferCurrent || 100000;
+}
+function getBufferTarget() {
+  return state.settings.bufferTarget || 150000;
+}
+
+// ============================================================
+// TAB ROUTING
+// ============================================================
+let activeTab = 'overview';
+function showTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => {
+    if (t.getAttribute('onclick') === `showTab('${tab}')`) t.classList.add('active');
+  });
+  render();
+}
+
+function changeMonth(delta) {
+  state.currentMonth += delta;
+  if (state.currentMonth > 11) { state.currentMonth = 0; state.currentYear++; }
+  if (state.currentMonth < 0) { state.currentMonth = 11; state.currentYear--; }
+  render();
+}
+
+// ============================================================
+// RENDER DISPATCH
+// ============================================================
+function render() {
+  const y = state.currentYear, m = state.currentMonth;
+  document.getElementById('monthLabel').textContent = `${MONTHS_SV[m]} ${y}`;
+  const c = document.getElementById('mainContent');
+  switch(activeTab) {
+    case 'overview':
+      c.innerHTML = renderOverview(y, m);
+      // Draw donuts after DOM is set
+      const _sp = getSpentByCategory(y, m);
+      const _ti = getTotalIncome(y, m), _tf = getTotalFixed(y, m), _tfx = getTotalFlexible(y, m);
+      drawDonut('donutBudget', [
+        { value: _tf, color: '#5a5e68' },
+        { value: _tfx, color: '#e8904c' },
+        { value: Math.max(0, _ti - _tf - _tfx), color: '#4caf82' },
+      ]);
+      const catEntries = Object.entries(_sp).sort((a,b)=>b[1]-a[1]).slice(0,6);
+      drawDonut('donutCats', catEntries.map(([cat, amt]) => ({ value: amt, color: CAT_COLORS[cat] || '#888' })));
+      break;
+    case 'transactions': c.innerHTML = renderTransactions(y, m); break;
+    case 'income': c.innerHTML = renderIncome(y, m); break;
+    case 'fixed': c.innerHTML = renderFixed(y, m); break;
+    case 'categories': c.innerHTML = renderCategories(y, m); break;
+    case 'goals': c.innerHTML = renderGoals(); break;
+    case 'annual': c.innerHTML = renderAnnual(); break;
+    case 'analysis': c.innerHTML = renderAnalysis(y, m); break;
+    case 'settings': c.innerHTML = renderSettings(); break;
+  }
+}
+
+// ============================================================
+// OVERVIEW
+// ============================================================
+function renderOverview(y, m) {
+  const totalIncome = getTotalIncome(y, m);
+  const totalFixed = getTotalFixed(y, m);
+  const totalFlexible = getTotalFlexible(y, m);
+  const netResult = totalIncome - totalFixed - totalFlexible;
+  const buffer = getBuffer();
+  const bufferTarget = getBufferTarget();
+  const bufferPct = Math.min(100, (buffer / bufferTarget) * 100);
+  const bufferNeeded = bufferTarget - buffer;
+  const monthsToTarget = bufferNeeded > 0 && netResult > 0 ? Math.ceil(bufferNeeded / netResult) : null;
+  const pending = getCCPending(y, m);
+  const spent = getSpentByCategory(y, m);
+  const budgets = getMonthBudgets(y, m);
+  const abs = getAbsences(y, m);
+
+  // Warnings
+  let warnings = [];
+  Object.keys(budgets).forEach(cat => {
+    if (!budgets[cat]) return;
+    const pct = (spent[cat] || 0) / budgets[cat];
+    if (pct >= 0.9) warnings.push({ cat, pct, spent: spent[cat] || 0, budget: budgets[cat] });
+  });
+
+  let plannedThisMonth = state.plannedExpenses.filter(p => p.year === y && p.month === m);
+
+  return `
+<div style="display:flex;flex-direction:column;gap:16px">
+
+${pending > 0 ? `<div class="alert alert-gold">💳 ${fmtMoney(pending)} på kreditkort bokfört denna månad dyker upp nästa period.</div>` : ''}
+
+${warnings.length > 0 ? `<div class="alert alert-red">⚠️ ${warnings.map(w => `<strong>${w.cat}</strong>: ${Math.round(w.pct*100)}% av budget`).join(' · ')}</div>` : ''}
+
+${plannedThisMonth.length > 0 ? `<div class="alert alert-gold">📅 Planerade utgifter denna månad: ${plannedThisMonth.map(p => `${p.name} (${fmtMoney(p.amount)})`).join(', ')}</div>` : ''}
+
+<!-- KPIs -->
+<div class="grid-4">
+  <div class="card">
+    <div class="kpi-val">${fmtMoney(totalIncome)}</div>
+    <div class="kpi-label">Total inkomst (netto)</div>
+  </div>
+  <div class="card">
+    <div class="kpi-val">${fmtMoney(totalFixed)}</div>
+    <div class="kpi-label">Fasta kostnader</div>
+    <div class="kpi-sub">${fmtMoney(totalIncome - totalFixed)} kvar efter fasta</div>
+  </div>
+  <div class="card">
+    <div class="kpi-val">${fmtMoney(totalFlexible)}</div>
+    <div class="kpi-label">Rörliga utgifter</div>
+  </div>
+  <div class="card">
+    <div class="kpi-val ${netResult >= 0 ? 'pos' : 'neg'}">${fmtMoney(netResult, true)}</div>
+    <div class="kpi-label">Månadsresultat</div>
+    <div class="kpi-sub">${netResult >= 0 ? 'Överskott' : 'Underskott'}</div>
+  </div>
+</div>
+
+<!-- Absence summary if any -->
+${(abs.albin.vab+abs.albin.sick+abs.albin.parent+(abs.albin.vacation||0)+(abs.albin.unpaidVacation||0)+abs.diana.vab+abs.diana.sick+abs.diana.parent+(abs.diana.vacation||0)+(abs.diana.unpaidVacation||0)) > 0 ? `
+<div class="card">
+  <div class="card-title">Frånvaro denna månad</div>
+  <div class="absence-grid">
+    ${renderAbsenceSummary('Albin', abs.albin, y, m)}
+    ${renderAbsenceSummary('Diana', abs.diana, y, m)}
+  </div>
+</div>` : ''}
+
+<!-- Donut charts -->
+<div class="grid-2">
+  <div class="card" style="display:flex;gap:20px;align-items:center">
+    <canvas id="donutBudget" width="120" height="120" style="flex-shrink:0"></canvas>
+    <div style="flex:1">
+      <div class="card-title" style="margin-bottom:10px">Inkomst fördelning</div>
+      ${[
+        ['Fasta kostnader', totalFixed, 'var(--text2)'],
+        ['Rörliga utgifter', totalFlexible, 'var(--orange)'],
+        ['Överskott', Math.max(0, netResult), 'var(--green)'],
+      ].map(([lbl, val, col]) => `
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:0.8rem">
+        <span style="width:10px;height:10px;border-radius:50%;background:${col};flex-shrink:0;display:inline-block"></span>
+        <span style="flex:1;color:var(--text2)">${lbl}</span>
+        <span style="font-weight:600">${totalIncome > 0 ? Math.round((val/totalIncome)*100) : 0}%</span>
+        <span style="color:var(--text3)">${fmtMoney(val)}</span>
+      </div>`).join('')}
+    </div>
+  </div>
+  <div class="card" style="display:flex;gap:20px;align-items:center">
+    <canvas id="donutCats" width="120" height="120" style="flex-shrink:0"></canvas>
+    <div style="flex:1;overflow:hidden">
+      <div class="card-title" style="margin-bottom:10px">Rörliga utgifter</div>
+      ${Object.entries(spent).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([cat, amt]) => `
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:0.8rem">
+        <span style="width:10px;height:10px;border-radius:50%;background:${CAT_COLORS[cat]||'#888'};flex-shrink:0;display:inline-block"></span>
+        <span style="flex:1;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${cat}</span>
+        <span style="color:var(--text3)">${fmtMoney(amt)}</span>
+      </div>`).join('')}
+      ${Object.keys(spent).length === 0 ? `<div style="color:var(--text3);font-size:0.82rem">Inga utgifter ännu</div>` : ''}
+    </div>
+  </div>
+</div>
+
+<!-- Category budget vs actual -->
+<div class="card">
+  <div class="section-header">
+    <div class="section-title">Kategorier – budget vs utfall</div>
+    <button class="btn btn-ghost btn-sm" onclick="showTab('categories')">Hantera budgetar →</button>
+  </div>
+  ${renderCategoryBars(spent, budgets)}
+</div>
+
+<!-- Buffer -->
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">Buffert</div>
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+      <div class="kpi-val">${fmtMoney(buffer)}</div>
+      <div style="font-size:0.8rem;color:var(--text2)">Mål: ${fmtMoney(bufferTarget)}</div>
+    </div>
+    <div class="prog-wrap" style="height:10px;margin-bottom:8px">
+      <div class="prog-fill ${bufferPct >= 100 ? 'green' : bufferPct > 60 ? 'gold' : 'orange'}" style="width:${bufferPct}%"></div>
+    </div>
+    <div style="font-size:0.8rem;color:var(--text2)">
+      ${bufferPct >= 100 ? '✓ Buffert uppnådd!' : `${fmtMoney(bufferNeeded)} kvar${monthsToTarget ? ` · ca ${monthsToTarget} mån vid nuvarande överskott` : ''}`}
+    </div>
+    <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+      <input type="number" id="bufInp" value="${buffer}" style="width:130px" onchange="updateBuffer(this.value)">
+      <span style="font-size:0.78rem;color:var(--text3)">Uppdatera saldo</span>
+    </div>
+  </div>
+  
+  <!-- Income breakdown -->
+  <div class="card">
+    <div class="card-title">Inkomstfördelning</div>
+    ${renderIncomeBreakdown(y, m)}
+  </div>
+</div>
+
+<!-- Goals quick view -->
+${state.goals.length > 0 ? `
+<div class="card">
+  <div class="section-header">
+    <div class="section-title">Sparmål</div>
+    <button class="btn btn-ghost btn-sm" onclick="showTab('goals')">Hantera mål →</button>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
+    ${state.goals.map(g => `
+    <div class="goal-card">
+      <div class="goal-name" style="color:${g.color}">${g.name}</div>
+      <div class="goal-amounts">
+        <span>${fmtMoney(g.saved)} sparat</span>
+        <span>Mål: ${fmtMoney(g.target)}</span>
+      </div>
+      <div class="prog-wrap"><div class="prog-fill gold" style="width:${Math.min(100,(g.saved/g.target)*100)}%;background:${g.color}"></div></div>
+    </div>`).join('')}
+  </div>
+</div>` : ''}
+
+</div>`;
+}
+
+function renderAbsenceSummary(person, abs, y, m) {
+  const income = getMonthIncome(y, m).find(r => r.person === person && r.useGross);
+  if (!income) return '';
+  const sgi = person === 'Albin' ? state.settings.albinSGI : state.settings.dianaSGI;
+  const impact = calcAbsenceImpact(income.gross || income.amount, abs, sgi);
+  const hasActivity = (abs.vab||0)+(abs.sick||0)+(abs.parent||0)+(abs.vacation||0)+(abs.unpaidVacation||0) > 0;
+  if (!hasActivity) return '';
+  return `
+  <div class="absence-card">
+    <div class="absence-label">${person} – denna månad</div>
+    ${abs.vacation > 0 ? `<div style="color:var(--green)">Semester: ${abs.vacation} dag${abs.vacation>1?'ar':''} (+${fmtMoney(impact.semesterBonus)} tillägg)</div>` : ''}
+    ${abs.unpaidVacation > 0 ? `<div style="color:var(--red)">Obetald semester: ${abs.unpaidVacation} dag${abs.unpaidVacation>1?'ar':''}</div>` : ''}
+    ${abs.vab > 0 ? `<div>VAB: ${abs.vab} dag${abs.vab>1?'ar':''}</div>` : ''}
+    ${abs.sick > 0 ? `<div>Sjuk: ${abs.sick} dag${abs.sick>1?'ar':''}</div>` : ''}
+    ${abs.parent > 0 ? `<div>Föräldraledig: ${abs.parent} dag${abs.parent>1?'ar':''}</div>` : ''}
+    ${impact.deduction > 0 ? `<div class="absence-val">−${fmtMoney(impact.deduction)}</div>` : ''}
+    ${impact.semesterBonus > 0 ? `<div style="color:var(--green);font-size:0.85rem">+${fmtMoney(impact.semesterBonus)} semestertillägg</div>` : ''}
+    ${impact.fk > 0 ? `<div style="color:var(--green);font-size:0.85rem">+${fmtMoney(impact.fk)} FK-ersättning</div>` : ''}
+  </div>`;
+}
+
+function renderCategoryBars(spent, budgets) {
+  const cats = ALL_CATEGORIES.filter(c => (spent[c] || 0) > 0 || (budgets[c] || 0) > 0);
+  if (cats.length === 0) return `<div style="color:var(--text3);font-size:0.85rem;padding:8px 0">Inga transaktioner denna månad. Gå till Transaktioner för att lägga till.</div>`;
+  const maxVal = Math.max(...cats.map(c => Math.max(spent[c]||0, budgets[c]||0)));
+  return `<div class="bar-chart">` + cats.map(c => {
+    const s = spent[c] || 0;
+    const b = budgets[c] || 0;
+    const pct = maxVal > 0 ? (s / maxVal) * 100 : 0;
+    const overBudget = b > 0 && s > b;
+    const color = overBudget ? 'var(--red)' : (CAT_COLORS[c] || 'var(--gold)');
+    const budgetPct = maxVal > 0 ? (b / maxVal) * 100 : 0;
+    return `
+    <div class="bar-row">
+      <div class="bar-label" title="${c}">${c}</div>
+      <div class="bar-track">
+        ${b > 0 ? `<div style="position:absolute;left:0;top:0;height:100%;width:${budgetPct}%;background:rgba(255,255,255,0.06);border-right:1px dashed var(--border)"></div>` : ''}
+        <div class="bar-fill" style="width:${pct}%;background:${color}"></div>
+      </div>
+      <div class="bar-val">
+        ${fmtMoney(s)}${b > 0 ? `<span style="color:${overBudget?'var(--red)':'var(--text3)'}"> / ${fmtMoney(b)}</span>` : ''}
+      </div>
+    </div>`;
+  }).join('') + `</div>`;
+}
+
+function renderIncomeBreakdown(y, m) {
+  const rows = getMonthIncome(y, m);
+  const abs = getAbsences(y, m);
+  let lines = [];
+  rows.forEach(r => {
+    let net;
+    if (r.useGross) {
+      const albinAbs = r.person === 'Albin' ? abs.albin : (r.person === 'Diana' ? abs.diana : { vab:0, sick:0, parent:0 });
+      const sgi = r.person === 'Albin' ? state.settings.albinSGI : state.settings.dianaSGI;
+      const impact = calcAbsenceImpact(r.gross || r.amount, albinAbs, sgi);
+      const { net: n } = calcNet(r.gross || r.amount, r.kostformanDays, r.mealType);
+      net = n - impact.deduction + impact.fk;
+    } else {
+      net = r.amount;
+    }
+    if (net !== 0) lines.push({ label: r.label, net });
+  });
+  return lines.map(l => `
+  <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:0.83rem">
+    <span style="color:var(--text2)">${l.label}</span>
+    <span style="color:var(--text);font-weight:500">${fmtMoney(l.net)}</span>
+  </div>`).join('');
+}
+
+function updateBuffer(v) {
+  state.settings.bufferCurrent = parseFloat(v) || 0;
+  save();
+  render();
+}
+
+// ============================================================
+// TRANSACTIONS
+// ============================================================
+function renderTransactions(y, m) {
+  const txs = getDisplayTransactions(y, m).sort((a,b) => new Date(b.date) - new Date(a.date));
+  return `
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div class="section-header">
+    <div class="section-title">Transaktioner – ${MONTHS_SV[m]} ${y}</div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" onclick="applyRecurring(${y},${m})">+ Lägg till återkommande</button>
+      <button class="btn btn-gold" onclick="openTxModal()">+ Ny transaktion</button>
+    </div>
+  </div>
+
+  <div class="card">
+    ${txs.length === 0 ? `<div style="color:var(--text3);font-size:0.85rem;padding:8px 0">Inga transaktioner denna period.</div>` : `
+    <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>Datum</th><th>Kategori</th><th>Person</th><th>Beskrivning</th>
+        <th style="text-align:right">Belopp</th><th>Betalsätt</th><th></th>
+      </tr></thead>
+      <tbody>
+        ${txs.map(tx => `
+        <tr>
+          <td style="color:var(--text3);white-space:nowrap">${tx.date}</td>
+          <td><span class="dot" style="background:${CAT_COLORS[tx.category]||'#666'}"></span> ${tx.category}</td>
+          <td><span class="badge badge-${tx.person?.toLowerCase() || 'gemensam'}">${tx.person || 'Gemensamt'}</span></td>
+          <td style="color:var(--text2)">${tx.description || '–'}</td>
+          <td class="td-right amount-neg">${fmtMoney(tx.amount)}</td>
+          <td style="color:var(--text3);font-size:0.78rem">${tx.ccType ? `💳 ${tx.ccType}` : '💵 Kontant/debet'}</td>
+          <td>
+            <button class="btn btn-ghost btn-sm btn-icon" onclick="openTxModal('${tx.id}')">✏</button>
+            <button class="btn btn-danger btn-sm btn-icon" onclick="deleteTx('${tx.id}')">✕</button>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+    </div>
+    <div style="padding:10px 0;border-top:1px solid var(--border);margin-top:8px;display:flex;justify-content:space-between">
+      <span style="font-size:0.82rem;color:var(--text2)">${txs.length} transaktioner</span>
+      <span style="font-weight:600">${fmtMoney(txs.reduce((s,t)=>s+t.amount,0))}</span>
+    </div>`}
+  </div>
+
+  <!-- Recurring transactions -->
+  ${state.recurringTx.length > 0 ? `
+  <div class="card">
+    <div class="section-header">
+      <div class="card-title">Återkommande transaktioner</div>
+      <button class="btn btn-ghost btn-sm" onclick="openRecurringModal()">Hantera</button>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Namn</th><th>Kategori</th><th>Dag</th><th style="text-align:right">Belopp</th></tr></thead>
+      <tbody>${state.recurringTx.map(r => `
+      <tr>
+        <td>${r.label}</td><td>${r.category}</td>
+        <td style="color:var(--text3)">${r.dayOfMonth}:e</td>
+        <td class="td-right amount-neg">${fmtMoney(r.amount)}</td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+  </div>` : `
+  <div class="card" style="border-style:dashed;cursor:pointer;text-align:center;padding:16px;color:var(--text3)" onclick="openRecurringModal()">
+    + Lägg till återkommande transaktioner (t.ex. Jack's promenader, Spotify)
+  </div>`}
+</div>`;
+}
+
+function openTxModal(editId) {
+  const tx = editId ? state.transactions.find(t => t.id === editId) : null;
+  const today = new Date().toISOString().slice(0,10);
+  showModal(editId ? 'Redigera transaktion' : 'Ny transaktion', `
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Datum</label>
+        <input type="date" id="tx_date" value="${tx?.date || today}">
+      </div>
+      <div class="form-group">
+        <label>Belopp (kr)</label>
+        <input type="number" id="tx_amount" value="${tx?.amount || ''}" placeholder="0">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Kategori</label>
+        <select id="tx_cat">
+          ${ALL_CATEGORIES.map(c => `<option value="${c}" ${tx?.category===c?'selected':''}>${c}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Person</label>
+        <select id="tx_person">
+          ${['Albin','Diana','Gemensamt'].map(p => `<option value="${p}" ${tx?.person===p?'selected':''}>${p}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Betalsätt</label>
+      <select id="tx_cc">
+        <option value="" ${!tx?.ccType?'selected':''}>Kontant / Debetkort</option>
+        <option value="Albin" ${tx?.ccType==='Albin'?'selected':''}>💳 Albin – SAS Mastercard</option>
+        <option value="Diana" ${tx?.ccType==='Diana'?'selected':''}>💳 Diana – SAS Amex</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Beskrivning</label>
+      <input type="text" id="tx_desc" value="${tx?.description || ''}" placeholder="Valfri beskrivning">
+    </div>
+  </div>`,
+  `<button class="btn btn-ghost" onclick="closeModal()">Avbryt</button>
+   <button class="btn btn-gold" onclick="saveTx('${editId||''}')">Spara</button>`);
+}
+
+function saveTx(editId) {
+  const date = document.getElementById('tx_date').value;
+  const amount = parseNum(document.getElementById('tx_amount').value);
+  const category = document.getElementById('tx_cat').value;
+  const person = document.getElementById('tx_person').value;
+  const ccType = document.getElementById('tx_cc').value || null;
+  const description = document.getElementById('tx_desc').value;
+  if (!date || !amount || !category) return;
+  if (editId) {
+    const idx = state.transactions.findIndex(t => t.id === editId);
+    if (idx >= 0) state.transactions[idx] = { ...state.transactions[idx], date, amount, category, person, ccType, description };
+  } else {
+    state.transactions.push({ id: uid(), date, amount, category, person, ccType, description });
+  }
+  save(); closeModal(); render();
+}
+
+function deleteTx(id) {
+  state.transactions = state.transactions.filter(t => t.id !== id);
+  save(); render();
+}
+
+function applyRecurring(y, m) {
+  const key = fmtKey(y, m);
+  const existing = state.transactions.filter(t => {
+    const d = new Date(t.date);
+    return d.getFullYear() === y && d.getMonth() === m && t.isRecurring;
+  });
+  const toAdd = state.recurringTx.filter(r => !existing.some(e => e.recurringId === r.id));
+  toAdd.forEach(r => {
+    state.transactions.push({
+      id: uid(), date: `${y}-${String(m+1).padStart(2,'0')}-${String(r.dayOfMonth).padStart(2,'0')}`,
+      amount: r.amount, category: r.category, person: r.person || 'Gemensamt',
+      description: r.label, ccType: null, isRecurring: true, recurringId: r.id
+    });
+  });
+  save(); render();
+}
+
+function openRecurringModal() {
+  showModal('Återkommande transaktioner', `
+  <div id="recList">
+    ${state.recurringTx.map(r => `
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <span style="flex:1">${r.label}</span>
+      <span style="color:var(--text3);font-size:0.8rem">${r.category}</span>
+      <span>${fmtMoney(r.amount)}</span>
+      <button class="btn btn-danger btn-sm" onclick="deleteRecurring('${r.id}')">✕</button>
+    </div>`).join('') || '<div style="color:var(--text3)">Inga återkommande ännu.</div>'}
+  </div>
+  <hr class="divider">
+  <div class="form-row">
+    <div class="form-group"><label>Namn</label><input type="text" id="rec_label" placeholder="Spotify Premium"></div>
+    <div class="form-group"><label>Belopp</label><input type="number" id="rec_amount" placeholder="129"></div>
+  </div>
+  <div class="form-row">
+    <div class="form-group"><label>Kategori</label><select id="rec_cat">${ALL_CATEGORIES.map(c=>`<option>${c}</option>`).join('')}</select></div>
+    <div class="form-group"><label>Dag i månaden</label><input type="number" id="rec_day" value="1" min="1" max="28"></div>
+  </div>
+  <button class="btn btn-gold" style="margin-top:8px;width:100%" onclick="addRecurring()">+ Lägg till</button>`,
+  `<button class="btn btn-ghost" onclick="closeModal()">Stäng</button>`);
+}
+
+function addRecurring() {
+  const label = document.getElementById('rec_label').value;
+  const amount = parseNum(document.getElementById('rec_amount').value);
+  const category = document.getElementById('rec_cat').value;
+  const dayOfMonth = parseInt(document.getElementById('rec_day').value) || 1;
+  if (!label || !amount) return;
+  state.recurringTx.push({ id: uid(), label, amount, category, dayOfMonth });
+  save(); closeModal(); render();
+}
+
+function deleteRecurring(id) {
+  state.recurringTx = state.recurringTx.filter(r => r.id !== id);
+  save(); closeModal(); render();
+}
+
+// ============================================================
+// INCOME
+// ============================================================
+function renderIncome(y, m) {
+  const key = getMonthKey();
+  let rows = getMonthIncome(y, m);
+  if (!state.income[key]) { state.income[key] = rows; save(); }
+  const abs = getAbsences(y, m);
+
+  return `
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div class="section-header">
+    <div class="section-title">Inkomster – ${MONTHS_SV[m]} ${y}</div>
+    <button class="btn btn-gold" onclick="addIncomeRow('${key}')">+ Lägg till rad</button>
+  </div>
+
+  <!-- Absence inputs -->
+  <div class="card">
+    <div class="card-title">Frånvaro denna månad</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      ${renderAbsenceInputs('Albin', key, abs.albin)}
+      ${renderAbsenceInputs('Diana', key, abs.diana)}
+    </div>
+  </div>
+
+  <!-- Income rows -->
+  <div class="card">
+    <div class="card-title">Inkomstrader</div>
+    <div style="overflow-x:auto">
+    <table>
+      <thead><tr>
+        <th>Benämning</th><th>Person</th><th style="text-align:center">Brutto?</th>
+        <th>Bruttolön</th><th>Kostförmån dagar</th><th style="text-align:right">Beräknad netto</th><th></th>
+      </tr></thead>
+      <tbody>
+        ${rows.map(r => renderIncomeRow(r, key, abs)).join('')}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5" style="padding-top:10px;font-weight:600;color:var(--text2)">Total inkomst (netto)</td>
+          <td class="td-right" style="padding-top:10px;font-size:1.1rem;font-weight:600;color:var(--green)">${fmtMoney(getTotalIncome(y,m))}</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+    </div>
+  </div>
+
+  <!-- Gross → Net calculator panel -->
+  <div class="card">
+    <div class="card-title">Brutto → Netto kalkylator (skattetabell 31, 2026)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+      ${renderGrossNetPanel('Albin', y, m, abs.albin)}
+      ${renderGrossNetPanel('Diana', y, m, abs.diana)}
+    </div>
+  </div>
+</div>`;
+}
+
+function renderAbsenceInputs(person, key, abs) {
+  const fields = [
+    ['vacation','Semesterdagar (betald, +400kr/dag)'],
+    ['unpaidVacation','Obetald semester (avdrag)'],
+    ['vab','VAB-dagar'],
+    ['sick','Sjukdagar'],
+    ['parent','Föräldraledighetsdagar']
+  ];
+  return `
+  <div>
+    <div style="font-weight:600;margin-bottom:8px;color:${person==='Albin'?'var(--blue)':'var(--purple)'}">${person}</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      ${fields.map(([field,label]) => `
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px">
+        <label style="min-width:230px;font-size:0.8rem;color:${field==='vacation'?'var(--green)':field==='unpaidVacation'?'var(--red)':'var(--text2)'}">${label}</label>
+        <input type="number" min="0" max="31" value="${abs[field]||0}" style="width:60px"
+          onchange="updateAbsence('${key}','${person.toLowerCase()}','${field}',this.value)">
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function renderIncomeRow(r, key, abs) {
+  let netDisplay = '';
+  if (r.useGross) {
+    const person = r.person;
+    const absP = person === 'Albin' ? abs.albin : (person === 'Diana' ? abs.diana : {vab:0,sick:0,parent:0,vacation:0,unpaidVacation:0});
+    const sgi = person === 'Albin' ? state.settings.albinSGI : state.settings.dianaSGI;
+    const impact = calcAbsenceImpact(r.gross || r.amount, absP, sgi);
+    const { net, tax, forman, kostavdrag } = calcNet(r.gross || r.amount, r.kostformanDays, r.mealType);
+    const autoNet = net - impact.deduction + impact.fk + impact.semesterBonus;
+    const finalNet = (r.manualNet && r.manualNet > 0) ? r.manualNet : autoNet;
+    const isOverridden = r.manualNet && r.manualNet > 0;
+    netDisplay = `<div style="font-weight:600;color:var(--green)">${fmtMoney(finalNet)}${isOverridden?'<span style="color:var(--gold);font-size:0.7rem;margin-left:4px">✎ manuell</span>':''}</div>
+      <div style="font-size:0.72rem;color:var(--text3)">Skatt: ${fmtMoney(tax)} · Kostavd: ${fmtMoney(kostavdrag)}</div>
+      ${impact.semesterBonus > 0 ? `<div style="font-size:0.72rem;color:var(--green)">+${fmtMoney(impact.semesterBonus)} semestertillägg</div>` : ''}
+      ${impact.deduction > 0 ? `<div style="font-size:0.72rem;color:var(--red)">Frånv: −${fmtMoney(impact.deduction)}${impact.fk>0?` +${fmtMoney(impact.fk)} FK`:''}</div>` : ''}`;
+  } else {
+    netDisplay = `<div style="font-weight:600;color:var(--text)">${fmtMoney(r.amount)}</div>`;
+  }
+  return `
+  <tr>
+    <td><input type="text" value="${r.label}" style="width:100%;min-width:150px" onchange="updateIncomeRow('${key}','${r.id}','label',this.value)"></td>
+    <td>
+      <select onchange="updateIncomeRow('${key}','${r.id}','person',this.value)">
+        ${['Albin','Diana','Gemensamt'].map(p=>`<option ${r.person===p?'selected':''}>${p}</option>`).join('')}
+      </select>
+    </td>
+    <td style="text-align:center">
+      <input type="checkbox" ${r.useGross?'checked':''} onchange="updateIncomeRow('${key}','${r.id}','useGross',this.checked)">
+    </td>
+    <td>
+      ${r.useGross ? `<input type="number" value="${r.gross || r.amount}" style="width:100px" onchange="updateIncomeRow('${key}','${r.id}','gross',this.value)">` : 
+      `<input type="number" value="${r.amount}" style="width:100px" onchange="updateIncomeRow('${key}','${r.id}','amount',this.value)">`}
+    </td>
+    <td>
+      ${r.useGross ? `<input type="number" value="${r.kostformanDays||0}" min="0" max="23" style="width:60px" onchange="updateIncomeRow('${key}','${r.id}','kostformanDays',this.value)" title="Kostförmånsdagar (Visita: du betalar 55kr/dag, schablonvärde 124kr, skattepliktig diff 69kr/dag)">` : '–'}
+    </td>
+    <td class="td-right">${netDisplay}</td>
+    <td><button class="btn btn-danger btn-sm btn-icon" onclick="removeIncomeRow('${key}','${r.id}')">✕</button></td>
+  </tr>`;
+}
+
+function renderGrossNetPanel(person, y, m, absP) {
+  const rows = getMonthIncome(y, m);
+  const incRow = rows.find(r => r.person === person && r.useGross);
+  if (!incRow) return `<div style="color:var(--text3)">Ingen bruttolön för ${person} denna månad.</div>`;
+  const gross = incRow.gross || incRow.amount;
+  const sgi = person === 'Albin' ? state.settings.albinSGI : state.settings.dianaSGI;
+  const impact = calcAbsenceImpact(gross, absP, sgi);
+  const { net, tax, forman, kostavdrag } = calcNet(gross, incRow.kostformanDays, incRow.mealType);
+  const dailyGross = gross / (state.settings.workDaysPerMonth || 22);
+  const color = person === 'Albin' ? 'var(--blue)' : 'var(--purple)';
+  const autoNet = net - impact.deduction + impact.fk + impact.semesterBonus;
+  const hasManual = incRow.manualNet && incRow.manualNet > 0;
+  const key = fmtKey(y, m);
+  return `
+  <div>
+    <div style="font-weight:700;color:${color};margin-bottom:12px;font-size:1rem">${person}</div>
+    <div style="display:flex;flex-direction:column;gap:5px;font-size:0.83rem">
+      <div style="display:flex;justify-content:space-between;padding:4px 0">
+        <span style="color:var(--text2)">Bruttolön</span><span>${fmtMoney(gross)}</span>
+      </div>
+      ${forman > 0 ? `<div style="display:flex;justify-content:space-between;padding:4px 0;color:var(--text3)">
+        <span>+ Kostförmån skattepliktig (${incRow.kostformanDays} × 69 kr)</span><span>+${fmtMoney(forman)}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0;color:var(--text3)">
+        <span>Skatteunderlag</span><span>${fmtMoney(gross + forman)}</span>
+      </div>` : ''}
+      <div style="display:flex;justify-content:space-between;padding:4px 0;color:var(--red)">
+        <span>− Skatt (tabell 31)</span><span>−${fmtMoney(tax)}</span>
+      </div>
+      ${kostavdrag > 0 ? `<div style="display:flex;justify-content:space-between;padding:4px 0;color:var(--text3)">
+        <span>− Kostavdrag (${incRow.kostformanDays} × 55 kr)</span><span>−${fmtMoney(kostavdrag)}</span>
+      </div>` : ''}
+      <div style="border-top:1px solid var(--border);margin:4px 0"></div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0;font-weight:600">
+        <span>Nettolön (beräknad)</span><span style="color:var(--green)">${fmtMoney(net)}</span>
+      </div>
+      ${impact.semesterBonus > 0 ? `<div style="display:flex;justify-content:space-between;padding:4px 0;color:var(--green)">
+        <span>+ Semestertillägg (${absP.vacation} dag × 400 kr, Visita)</span><span>+${fmtMoney(impact.semesterBonus)}</span>
+      </div>` : ''}
+      ${impact.deduction > 0 || impact.fk > 0 ? `
+      <div style="border-top:1px solid var(--border);margin:4px 0"></div>
+      <div style="color:var(--text3);font-size:0.78rem;margin-bottom:4px">Frånvaropåverkan:</div>
+      ${absP.unpaidVacation > 0 ? `<div style="display:flex;justify-content:space-between;color:var(--red)">
+        <span>− Obetald semester (${absP.unpaidVacation} dag)</span><span>−${fmtMoney(Math.round((gross/(state.settings.workDaysPerMonth||22))*absP.unpaidVacation))}</span>
+      </div>` : ''}
+      ${impact.deduction > 0 ? `<div style="display:flex;justify-content:space-between;color:var(--red)">
+        <span>− Frånvaroavdrag (sjuk/VAB/FL)</span><span>−${fmtMoney(impact.deduction)}</span>
+      </div>` : ''}
+      ${impact.fk > 0 ? `<div style="display:flex;justify-content:space-between;color:var(--green)">
+        <span>+ FK-ersättning</span><span>+${fmtMoney(impact.fk)}</span>
+      </div>` : ''}` : ''}
+      <div style="border-top:1px solid var(--border);margin:4px 0"></div>
+      <div style="display:flex;justify-content:space-between;font-weight:700;font-size:0.95rem">
+        <span>Beräknad utbetalning</span>
+        <span style="color:${hasManual?'var(--text3)':'var(--green)'};${hasManual?'text-decoration:line-through':''}">${fmtMoney(autoNet)}</span>
+      </div>
+      ${hasManual ? `<div style="display:flex;justify-content:space-between;font-weight:700;font-size:1rem;margin-top:4px">
+        <span>Faktisk utbetalning (lönespec)</span><span style="color:var(--green)">${fmtMoney(incRow.manualNet)}</span>
+      </div>` : ''}
+
+      <!-- Manual override -->
+      <div style="margin-top:10px;padding:10px;background:var(--bg3);border-radius:8px;border:1px solid var(--border)">
+        <div style="font-size:0.75rem;color:var(--text3);margin-bottom:6px">
+          💡 Stämmer inte beräkningen? Ange faktisk nettoutbetalning per lönespecifikation:
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="number" placeholder="Lämna tomt för beräknat värde"
+            value="${incRow.manualNet || ''}"
+            style="flex:1"
+            onchange="updateIncomeRow('${key}','${incRow.id}','manualNet',this.value ? parseFloat(this.value) : 0)">
+          ${hasManual ? `<button class="btn btn-ghost btn-sm" onclick="updateIncomeRow('${key}','${incRow.id}','manualNet',0)">✕ Nollställ</button>` : ''}
+        </div>
+      </div>
+
+      <div style="margin-top:8px;padding:8px;background:var(--bg3);border-radius:6px;font-size:0.78rem;color:var(--text3)">
+        Dagslön: ${fmtMoney(Math.round(dailyGross))} · Effektiv skatt: ${Math.round((tax/(gross+forman))*100)}% · Kostavdrag/mån: ${fmtMoney(kostavdrag)}
+      </div>
+    </div>
+  </div>`;
+}
+
+function updateIncomeRow(key, id, field, value) {
+  if (!state.income[key]) state.income[key] = getMonthIncome(state.currentYear, state.currentMonth);
+  const idx = state.income[key].findIndex(r => r.id === id);
+  if (idx < 0) return;
+  if (field === 'gross' || field === 'amount' || field === 'kostformanDays') value = parseNum(value);
+  if (field === 'useGross') value = !!value;
+  state.income[key][idx][field] = value;
+  if (field === 'gross') state.income[key][idx].amount = parseNum(value);
+  save(); render();
+}
+
+function removeIncomeRow(key, id) {
+  if (state.income[key]) state.income[key] = state.income[key].filter(r => r.id !== id);
+  save(); render();
+}
+
+function addIncomeRow(key) {
+  if (!state.income[key]) state.income[key] = getMonthIncome(state.currentYear, state.currentMonth);
+  state.income[key].push({ id: uid(), label: 'Ny inkomst', amount: 0, gross: 0, person: 'Gemensamt', useGross: false, kostformanDays: 0, mealType: 'none' });
+  save(); render();
+}
+
+function updateAbsence(key, person, field, value) {
+  if (!state.absences[key]) state.absences[key] = { albin:{vab:0,sick:0,parent:0}, diana:{vab:0,sick:0,parent:0} };
+  state.absences[key][person][field] = parseInt(value) || 0;
+  save(); render();
+}
+
+// ============================================================
+// FIXED COSTS
+// ============================================================
+function renderFixed(y, m) {
+  const key = fmtKey(y, m);
+  let rows = getMonthFixed(y, m);
+  if (!state.fixedCosts[key]) { state.fixedCosts[key] = rows; save(); }
+  const groups = [...new Set(rows.map(r => r.group))];
+  const manualTotal = rows.reduce((s,r) => s+(r.amount||0), 0);
+  const kostavdrag = getKostavdragTotal(y, m);
+  const total = manualTotal + kostavdrag;
+
+  return `
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div class="section-header">
+    <div class="section-title">Fasta kostnader – ${MONTHS_SV[m]} ${y}</div>
+    <span style="font-weight:700;font-size:1.1rem;color:var(--text)">${fmtMoney(total)}</span>
+  </div>
+  ${groups.map(g => {
+    const gRows = rows.filter(r => r.group === g);
+    const gTotal = gRows.reduce((s,r) => s+(r.amount||0), 0);
+    return `
+    <div class="card">
+      <div class="section-header">
+        <div class="card-title">${g}</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-weight:600;color:var(--text2)">${fmtMoney(gTotal)}</span>
+          <button class="btn btn-ghost btn-sm" onclick="addFixedRow('${key}','${g}')">+ Rad</button>
+        </div>
+      </div>
+      ${gRows.map(r => `
+      <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+        <input type="text" value="${r.label}" style="flex:1" onchange="updateFixed('${key}','${r.id}','label',this.value)">
+        <input type="number" value="${r.amount||0}" style="width:110px;text-align:right" onchange="updateFixed('${key}','${r.id}','amount',this.value)">
+        <span style="font-size:0.78rem;color:var(--text3);min-width:20px">kr</span>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="removeFixed('${key}','${r.id}')">✕</button>
+      </div>`).join('')}
+    </div>`;
+  }).join('')}
+  ${kostavdrag > 0 ? `
+  <div class="card" style="border-color:rgba(201,168,76,0.2)">
+    <div class="card-title">Kostavdrag (automatiskt beräknat)</div>
+    <div style="display:flex;align-items:center;gap:10px;padding:6px 0">
+      <span style="flex:1;color:var(--text2);font-size:0.85rem">Kostavdrag måltider (55 kr × kostförmånsdagar) – Visita/Unionen</span>
+      <span style="width:110px;text-align:right;font-weight:600;color:var(--gold)">${fmtMoney(kostavdrag)}</span>
+      <span style="font-size:0.78rem;color:var(--text3);min-width:20px">kr</span>
+      <span style="width:60px"></span>
+    </div>
+    <div style="font-size:0.75rem;color:var(--text3)">Baserat på kostförmånsdagar inmatade under Inkomster. Ändra där för att justera.</div>
+  </div>` : ''}
+</div>`;
+}
+
+function updateFixed(key, id, field, value) {
+  if (!state.fixedCosts[key]) return;
+  const idx = state.fixedCosts[key].findIndex(r => r.id === id);
+  if (idx < 0) return;
+  state.fixedCosts[key][idx][field] = field === 'amount' ? parseNum(value) : value;
+  save(); render();
+}
+
+function removeFixed(key, id) {
+  if (state.fixedCosts[key]) state.fixedCosts[key] = state.fixedCosts[key].filter(r => r.id !== id);
+  save(); render();
+}
+
+function addFixedRow(key, group) {
+  if (!state.fixedCosts[key]) state.fixedCosts[key] = getMonthFixed(state.currentYear, state.currentMonth);
+  state.fixedCosts[key].push({ id: uid(), group, label: 'Ny post', amount: 0 });
+  save(); render();
+}
+
+// ============================================================
+// CATEGORIES & BUDGETS
+// ============================================================
+function renderCategories(y, m) {
+  const key = fmtKey(y, m);
+  const budgets = getMonthBudgets(y, m);
+  if (!state.budgets[key]) { state.budgets[key] = budgets; save(); }
+  const spent = getSpentByCategory(y, m);
+  const totalBudget = Object.values(budgets).reduce((s,v) => s+(v||0), 0);
+  const totalSpent = Object.values(spent).reduce((s,v) => s+(v||0), 0);
+
+  return `
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div class="section-header">
+    <div class="section-title">Kategorier & Budget – ${MONTHS_SV[m]} ${y}</div>
+    <div style="font-size:0.85rem;color:var(--text2)">
+      Budget totalt: <strong>${fmtMoney(totalBudget)}</strong> · Spenderat: <strong>${fmtMoney(totalSpent)}</strong>
+    </div>
+  </div>
+
+  ${Object.keys(CAT_GROUPS).map(group => {
+    const cats = CAT_GROUPS[group];
+    const validCats = ALL_CATEGORIES.filter(c => cats.includes(c) || group === 'Övrigt');
+    const groupCats = group === 'Övrigt' ? ['Övrigt'] : ALL_CATEGORIES.filter(c => cats.some(x => c.startsWith(x.split(' ')[0]) && cats.includes(c)));
+    const actualCats = group === 'Övrigt' ? ['Övrigt'] : ALL_CATEGORIES.filter(c => Object.values(CAT_GROUPS).flat().includes(c) && cats.some(x => c === x));
+
+    return `
+    <div class="card">
+      <div class="card-title">${group}</div>
+      <div style="display:grid;grid-template-columns:1fr 120px 100px 100px 70px;gap:8px;margin-bottom:6px;padding:0 0 6px;border-bottom:1px solid var(--border)">
+        <span style="font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em">Kategori</span>
+        <span style="font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em">Budget/mån</span>
+        <span style="font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em">Spenderat</span>
+        <span style="font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em">Kvar</span>
+        <span style="font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em">%</span>
+      </div>
+      ${actualCats.map(cat => {
+        const b = budgets[cat] || 0;
+        const s = spent[cat] || 0;
+        const left = b - s;
+        const pct = b > 0 ? Math.round((s/b)*100) : null;
+        const overBudget = b > 0 && s > b;
+        return `
+        <div style="display:grid;grid-template-columns:1fr 120px 100px 100px 70px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.03)">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="dot" style="background:${CAT_COLORS[cat]||'#666'}"></span>
+            <span style="font-size:0.85rem">${cat}</span>
+          </div>
+          <div>
+            <input type="number" value="${b||''}" placeholder="0" style="width:100%"
+              onchange="updateBudget('${key}','${cat}',this.value)" title="Sätt månadsbudget för ${cat}">
+          </div>
+          <div style="text-align:right;font-size:0.85rem;color:${s>0?'var(--text)':'var(--text3)'}">${s > 0 ? fmtMoney(s) : '–'}</div>
+          <div style="text-align:right;font-size:0.85rem;color:${b>0?(overBudget?'var(--red)':'var(--green)'):'var(--text3)'}">
+            ${b > 0 ? (overBudget ? '−' : '') + fmtMoney(Math.abs(left)) : '–'}
+          </div>
+          <div>
+            ${pct !== null ? `
+            <div style="font-size:0.78rem;color:${pct>100?'var(--red)':pct>80?'var(--orange)':'var(--text2)'};font-weight:600">${pct}%</div>
+            <div class="prog-wrap" style="margin-top:3px">
+              <div class="prog-fill ${pct>100?'red':pct>80?'orange':'green'}" style="width:${Math.min(100,pct)}%"></div>
+            </div>` : '<span style="color:var(--text3);font-size:0.78rem">–</span>'}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('')}
+</div>`;
+}
+
+function updateBudget(key, cat, value) {
+  if (!state.budgets[key]) state.budgets[key] = {};
+  state.budgets[key][cat] = parseNum(value);
+  save();
+}
+
+// ============================================================
+// GOALS
+// ============================================================
+function renderGoals() {
+  const GOAL_COLORS = ['#c9a84c','#4caf82','#4c82c9','#9b59b6','#e8904c','#e84c82','#4cd0e8'];
+  return `
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div class="section-header">
+    <div class="section-title">Sparmål</div>
+    <button class="btn btn-gold" onclick="openGoalModal()">+ Nytt mål</button>
+  </div>
+
+  <!-- Planned expenses -->
+  <div class="card">
+    <div class="section-header">
+      <div class="card-title">Planerade utgifter</div>
+      <button class="btn btn-ghost btn-sm" onclick="openPlannedModal()">+ Planerad utgift</button>
+    </div>
+    ${state.plannedExpenses.length === 0 ? `<div style="color:var(--text3);font-size:0.85rem">Inga planerade utgifter. Lägg till semestrar, större inköp osv.</div>` : `
+    <div class="table-wrap"><table>
+      <thead><tr><th>Namn</th><th>Månad</th><th>Kategori</th><th style="text-align:right">Belopp</th><th>Anteckningar</th><th></th></tr></thead>
+      <tbody>
+        ${state.plannedExpenses.sort((a,b)=>a.year*12+a.month - (b.year*12+b.month)).map(p => `
+        <tr>
+          <td>${p.name}</td>
+          <td style="color:var(--text3);white-space:nowrap">${MONTHS_SV[p.month]} ${p.year}</td>
+          <td><span class="dot" style="background:${CAT_COLORS[p.category]||'#666'}"></span> ${p.category}</td>
+          <td class="td-right amount-neg">${fmtMoney(p.amount)}</td>
+          <td style="color:var(--text2);font-size:0.8rem">${p.notes || '–'}</td>
+          <td><button class="btn btn-danger btn-sm btn-icon" onclick="deletePlanned('${p.id}')">✕</button></td>
+        </tr>`).join('')}
+      </tbody>
+    </table></div>`}
+  </div>
+
+  <!-- Savings goals -->
+  ${state.goals.length === 0 ? `
+  <div class="card" style="text-align:center;border-style:dashed;padding:32px;color:var(--text3)">
+    <div style="font-size:1.4rem;margin-bottom:8px">🎯</div>
+    <div>Inga sparmål ännu. Skapa ett mål för t.ex. semester, bil eller kontantinsats.</div>
+  </div>` : 
+  state.goals.map(g => {
+    const pct = Math.min(100, (g.saved / g.target) * 100);
+    const remaining = g.target - g.saved;
+    const monthsLeft = g.monthlyTarget > 0 ? Math.ceil(remaining / g.monthlyTarget) : null;
+    return `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+        <div>
+          <div style="font-family:'DM Serif Display',serif;font-size:1.2rem;color:${g.color}">${g.name}</div>
+          ${g.deadline ? `<div style="font-size:0.78rem;color:var(--text3)">Deadline: ${g.deadline}</div>` : ''}
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost btn-sm" onclick="openGoalModal('${g.id}')">✏ Redigera</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteGoal('${g.id}')">✕</button>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <div>
+          <div style="font-size:1.5rem;font-weight:700;color:${g.color}">${fmtMoney(g.saved)}</div>
+          <div style="font-size:0.78rem;color:var(--text3)">av ${fmtMoney(g.target)} mål</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:1.1rem;font-weight:600;color:var(--text2)">${fmtMoney(remaining)}</div>
+          <div style="font-size:0.78rem;color:var(--text3)">kvar${monthsLeft ? ` · ca ${monthsLeft} mån` : ''}</div>
+        </div>
+      </div>
+      <div class="prog-wrap" style="height:8px;margin-bottom:12px">
+        <div class="prog-fill" style="width:${pct}%;background:${g.color}"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <label style="font-size:0.78rem;color:var(--text3)">Uppdatera sparat:</label>
+        <input type="number" value="${g.saved}" style="width:130px" onchange="updateGoalSaved('${g.id}',this.value)">
+        <label style="font-size:0.78rem;color:var(--text3)">Sparmål/mån:</label>
+        <input type="number" value="${g.monthlyTarget||0}" placeholder="0" style="width:100px" onchange="updateGoalMonthly('${g.id}',this.value)">
+      </div>
+    </div>`;
+  }).join('')}
+</div>`;
+}
+
+function openGoalModal(editId) {
+  const g = editId ? state.goals.find(x => x.id === editId) : null;
+  const colors = ['#c9a84c','#4caf82','#4c82c9','#9b59b6','#e8904c','#e84c82','#4cd0e8'];
+  showModal(editId ? 'Redigera sparmål' : 'Nytt sparmål', `
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div class="form-group"><label>Namn</label><input type="text" id="g_name" value="${g?.name||''}" placeholder="Sommarsemester 2026"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Målbelopp (kr)</label><input type="number" id="g_target" value="${g?.target||''}"></div>
+      <div class="form-group"><label>Sparat hittills</label><input type="number" id="g_saved" value="${g?.saved||0}"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Sparmål/mån</label><input type="number" id="g_monthly" value="${g?.monthlyTarget||0}"></div>
+      <div class="form-group"><label>Deadline</label><input type="text" id="g_deadline" value="${g?.deadline||''}" placeholder="2026-08"></div>
+    </div>
+    <div class="form-group">
+      <label>Färg</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        ${colors.map(c => `<div onclick="selectGoalColor('${c}')" id="gc_${c.replace('#','')}" style="width:28px;height:28px;border-radius:50%;background:${c};cursor:pointer;border:2px solid ${g?.color===c?'#fff':'transparent'};transition:border .15s"></div>`).join('')}
+      </div>
+      <input type="hidden" id="g_color" value="${g?.color||colors[0]}">
+    </div>
+  </div>`,
+  `<button class="btn btn-ghost" onclick="closeModal()">Avbryt</button>
+   <button class="btn btn-gold" onclick="saveGoal('${editId||''}')">Spara</button>`);
+}
+
+function selectGoalColor(c) {
+  document.getElementById('g_color').value = c;
+  document.querySelectorAll('[id^="gc_"]').forEach(el => el.style.border = '2px solid transparent');
+  const el = document.getElementById('gc_' + c.replace('#',''));
+  if (el) el.style.border = '2px solid #fff';
+}
+
+function saveGoal(editId) {
+  const name = document.getElementById('g_name').value;
+  const target = parseNum(document.getElementById('g_target').value);
+  const saved = parseNum(document.getElementById('g_saved').value);
+  const monthlyTarget = parseNum(document.getElementById('g_monthly').value);
+  const deadline = document.getElementById('g_deadline').value;
+  const color = document.getElementById('g_color').value;
+  if (!name || !target) return;
+  if (editId) {
+    const idx = state.goals.findIndex(g => g.id === editId);
+    if (idx >= 0) state.goals[idx] = { ...state.goals[idx], name, target, saved, monthlyTarget, deadline, color };
+  } else {
+    state.goals.push({ id: uid(), name, target, saved, monthlyTarget, deadline, color });
+  }
+  save(); closeModal(); render();
+}
+
+function deleteGoal(id) {
+  state.goals = state.goals.filter(g => g.id !== id);
+  save(); render();
+}
+
+function updateGoalSaved(id, v) {
+  const idx = state.goals.findIndex(g => g.id === id);
+  if (idx >= 0) state.goals[idx].saved = parseNum(v);
+  save(); render();
+}
+
+function updateGoalMonthly(id, v) {
+  const idx = state.goals.findIndex(g => g.id === id);
+  if (idx >= 0) state.goals[idx].monthlyTarget = parseNum(v);
+  save();
+}
+
+function openPlannedModal() {
+  const today = new Date();
+  showModal('Planerad utgift', `
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div class="form-group"><label>Namn</label><input type="text" id="pl_name" placeholder="Sommarsemester Thailand"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Belopp</label><input type="number" id="pl_amount" placeholder="25000"></div>
+      <div class="form-group"><label>Kategori</label><select id="pl_cat">${ALL_CATEGORIES.map(c=>`<option>${c}</option>`).join('')}</select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>År</label><input type="number" id="pl_year" value="${today.getFullYear()}"></div>
+      <div class="form-group"><label>Månad</label><select id="pl_month">${MONTHS_SV.map((n,i)=>`<option value="${i}">${n}</option>`).join('')}</select></div>
+    </div>
+    <div class="form-group"><label>Anteckningar</label><input type="text" id="pl_notes" placeholder="Flyg + hotell"></div>
+  </div>`,
+  `<button class="btn btn-ghost" onclick="closeModal()">Avbryt</button>
+   <button class="btn btn-gold" onclick="savePlanned()">Spara</button>`);
+}
+
+function savePlanned() {
+  const name = document.getElementById('pl_name').value;
+  const amount = parseNum(document.getElementById('pl_amount').value);
+  const category = document.getElementById('pl_cat').value;
+  const year = parseInt(document.getElementById('pl_year').value);
+  const month = parseInt(document.getElementById('pl_month').value);
+  const notes = document.getElementById('pl_notes').value;
+  if (!name || !amount) return;
+  state.plannedExpenses.push({ id: uid(), name, amount, category, year, month, notes });
+  save(); closeModal(); render();
+}
+
+function deletePlanned(id) {
+  state.plannedExpenses = state.plannedExpenses.filter(p => p.id !== id);
+  save(); render();
+}
+
+// ============================================================
+// ANNUAL VIEW
+// ============================================================
+function renderAnnual() {
+  const year = state.currentYear;
+  const rows = [
+    { label: 'Inkomst', key: 'income', color: 'var(--green)' },
+    { label: 'Fasta', key: 'fixed', color: 'var(--text2)' },
+    { label: 'Rörligt', key: 'flexible', color: 'var(--orange)' },
+    { label: 'Resultat', key: 'result', color: 'var(--gold)', bold: true },
+    { label: 'Buffert', key: 'buffer', color: 'var(--blue)' },
+  ];
+
+  const data = {};
+  rows.forEach(r => { data[r.key] = []; });
+
+  let cumBuffer = getBuffer();
+  for (let m = 0; m < 12; m++) {
+    const income = getTotalIncome(year, m);
+    const fixed = getTotalFixed(year, m);
+    const flex = getTotalFlexible(year, m);
+    const result = income - fixed - flex;
+    cumBuffer = Math.max(0, cumBuffer + result);
+    data.income.push(income);
+    data.fixed.push(fixed);
+    data.flexible.push(flex);
+    data.result.push(result);
+    data.buffer.push(cumBuffer);
+  }
+
+  const planned = state.plannedExpenses.filter(p => p.year === year);
+  const totals = {
+    income: data.income.reduce((s,v)=>s+v,0),
+    fixed: data.fixed.reduce((s,v)=>s+v,0),
+    flexible: data.flexible.reduce((s,v)=>s+v,0),
+    result: data.result.reduce((s,v)=>s+v,0),
+  };
+
+  return `
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div class="section-header">
+    <div class="section-title">Årsöversikt ${year}</div>
+  </div>
+
+  <div class="card">
+    <div style="overflow-x:auto">
+      <!-- Header -->
+      <div class="annual-row" style="margin-bottom:8px">
+        <div style="font-size:0.72rem;color:var(--text3)">Post</div>
+        ${SHORT_MONTHS.map(mn => `<div class="annual-cell header">${mn}</div>`).join('')}
+      </div>
+      ${rows.map(row => `
+      <div class="annual-row" style="margin-bottom:${row.bold?'8px':'2px'}">
+        <div style="font-size:0.78rem;color:${row.color};white-space:nowrap;font-weight:${row.bold?700:400}">${row.label}</div>
+        ${data[row.key].map((v, mi) => `
+        <div class="annual-cell ${row.key==='result'?(v>=0?'pos':'neg'):''} ${mi===state.currentMonth?'highlight':''}"
+          style="color:${row.key==='result'?(v>=0?'var(--green)':'var(--red)'):row.color}">
+          ${row.key==='buffer' ? (v > 0 ? (v/1000).toFixed(0)+'k' : '–') : (v!==0 ? (Math.abs(v)/1000).toFixed(0)+'k' : '–')}
+        </div>`).join('')}
+      </div>
+      ${row.bold ? `<div style="border-top:1px solid var(--border);margin:6px 0"></div>` : ''}`).join('')}
+
+      <!-- Annual totals -->
+      <div class="annual-row" style="margin-top:8px">
+        <div style="font-size:0.78rem;color:var(--text3)">Årstotalt</div>
+        ${SHORT_MONTHS.map((_,mi) => `<div class="annual-cell ${mi===state.currentMonth?'highlight':''}"></div>`).join('')}
+      </div>
+    </div>
+    <div style="margin-top:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      <div class="card" style="background:var(--bg3)">
+        <div class="kpi-label">Årets inkomst</div>
+        <div style="font-weight:700;font-size:1.1rem;color:var(--green)">${fmtMoney(totals.income)}</div>
+      </div>
+      <div class="card" style="background:var(--bg3)">
+        <div class="kpi-label">Årets fasta</div>
+        <div style="font-weight:700;font-size:1.1rem">${fmtMoney(totals.fixed)}</div>
+      </div>
+      <div class="card" style="background:var(--bg3)">
+        <div class="kpi-label">Årets rörliga</div>
+        <div style="font-weight:700;font-size:1.1rem">${fmtMoney(totals.flexible)}</div>
+      </div>
+      <div class="card" style="background:var(--bg3)">
+        <div class="kpi-label">Årets resultat</div>
+        <div style="font-weight:700;font-size:1.1rem;color:${totals.result>=0?'var(--green)':'var(--red)'}">${fmtMoney(totals.result, true)}</div>
+      </div>
+    </div>
+  </div>
+
+  ${planned.length > 0 ? `
+  <div class="card">
+    <div class="card-title">Planerade utgifter ${year}</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      ${planned.map(p => `
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:0.85rem">
+        <span><span class="dot" style="background:${CAT_COLORS[p.category]||'#666'}"></span> ${p.name}</span>
+        <span style="color:var(--text3)">${MONTHS_SV[p.month]}</span>
+        <span class="amount-neg">${fmtMoney(p.amount)}</span>
+      </div>`).join('')}
+    </div>
+  </div>` : ''}
+</div>`;
+}
+
+// ============================================================
+// ANALYSIS
+// ============================================================
+function renderAnalysis(y, m) {
+  const spent = getSpentByCategory(y, m);
+  const totalIncome = getTotalIncome(y, m);
+  const totalFixed = getTotalFixed(y, m);
+  const totalFlex = getTotalFlexible(y, m);
+
+  // 6-month trend
+  const trend = [];
+  for (let i = 5; i >= 0; i--) {
+    let tm = m - i, ty = y;
+    if (tm < 0) { tm += 12; ty--; }
+    trend.push({
+      label: SHORT_MONTHS[tm],
+      income: getTotalIncome(ty, tm),
+      fixed: getTotalFixed(ty, tm),
+      flex: getTotalFlexible(ty, tm),
+      result: getTotalIncome(ty, tm) - getTotalFixed(ty, tm) - getTotalFlexible(ty, tm)
+    });
+  }
+
+  const maxTrend = Math.max(...trend.map(t => Math.max(t.income, t.fixed + t.flex)));
+
+  // Top categories
+  const topCats = Object.entries(spent).sort((a,b) => b[1]-a[1]).slice(0, 10);
+
+  // Per person
+  const albinSpent = state.transactions
+    .filter(tx => { const eff = tx.ccType ? getCCEffectiveMonth(tx.date, tx.ccType) : null;
+      const d = new Date(tx.date);
+      return (eff ? eff.year===y && eff.month===m : d.getFullYear()===y && d.getMonth()===m) && tx.person==='Albin'; })
+    .reduce((s,t) => s+t.amount, 0);
+  const dianaSpent = state.transactions
+    .filter(tx => { const eff = tx.ccType ? getCCEffectiveMonth(tx.date, tx.ccType) : null;
+      const d = new Date(tx.date);
+      return (eff ? eff.year===y && eff.month===m : d.getFullYear()===y && d.getMonth()===m) && tx.person==='Diana'; })
+    .reduce((s,t) => s+t.amount, 0);
+  const sharedSpent = totalFlex - albinSpent - dianaSpent;
+
+  return `
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div class="section-title" style="margin-bottom:4px">Analys – ${MONTHS_SV[m]} ${y}</div>
+
+  <!-- Summary donut-style KPIs -->
+  <div class="grid-3">
+    <div class="card" style="text-align:center">
+      <div class="kpi-label">Fasta / Inkomst</div>
+      <div class="kpi-val">${totalIncome > 0 ? Math.round((totalFixed/totalIncome)*100) : 0}%</div>
+      <div class="kpi-sub">${fmtMoney(totalFixed)} av ${fmtMoney(totalIncome)}</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="kpi-label">Rörligt / Inkomst</div>
+      <div class="kpi-val">${totalIncome > 0 ? Math.round((totalFlex/totalIncome)*100) : 0}%</div>
+      <div class="kpi-sub">${fmtMoney(totalFlex)} av ${fmtMoney(totalIncome)}</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="kpi-label">Sparkvot</div>
+      <div class="kpi-val ${totalIncome-totalFixed-totalFlex >= 0 ? 'pos' : 'neg'}">${totalIncome > 0 ? Math.round(((totalIncome-totalFixed-totalFlex)/totalIncome)*100) : 0}%</div>
+      <div class="kpi-sub">${fmtMoney(totalIncome-totalFixed-totalFlex)} överskott</div>
+    </div>
+  </div>
+
+  <!-- 6 month trend -->
+  <div class="card">
+    <div class="card-title">6-månaders trend</div>
+    <div style="display:flex;align-items:flex-end;gap:6px;height:100px;margin-bottom:8px">
+      ${trend.map(t => {
+        const incH = maxTrend > 0 ? (t.income / maxTrend) * 90 : 0;
+        const fixH = maxTrend > 0 ? (t.fixed / maxTrend) * 90 : 0;
+        const flxH = maxTrend > 0 ? (t.flex / maxTrend) * 90 : 0;
+        return `
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px">
+          <div style="width:100%;display:flex;align-items:flex-end;justify-content:center;gap:2px;height:90px">
+            <div style="width:8px;height:${incH}px;background:var(--green);border-radius:2px 2px 0 0;transition:height .3s" title="Inkomst: ${fmtMoney(t.income)}"></div>
+            <div style="width:8px;height:${fixH+flxH}px;background:linear-gradient(to top,var(--text3) ${(fixH/(fixH+flxH||1))*100}%,var(--orange) 0%);border-radius:2px 2px 0 0" title="Fasta+Rörligt: ${fmtMoney(t.fixed+t.flex)}"></div>
+          </div>
+          <div style="font-size:0.7rem;color:var(--text3)">${t.label}</div>
+          <div style="font-size:0.7rem;color:${t.result>=0?'var(--green)':'var(--red)'};font-weight:600">${t.result>=0?'+':''}${(t.result/1000).toFixed(0)}k</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div style="display:flex;gap:16px;font-size:0.75rem;color:var(--text3)">
+      <span><span style="display:inline-block;width:8px;height:8px;background:var(--green);border-radius:2px;margin-right:4px"></span>Inkomst</span>
+      <span><span style="display:inline-block;width:8px;height:8px;background:var(--text3);border-radius:2px;margin-right:4px"></span>Fasta</span>
+      <span><span style="display:inline-block;width:8px;height:8px;background:var(--orange);border-radius:2px;margin-right:4px"></span>Rörliga</span>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- Top categories -->
+    <div class="card">
+      <div class="card-title">Topp kategorier denna månad</div>
+      ${topCats.length === 0 ? `<div style="color:var(--text3);font-size:0.85rem">Inga utgifter ännu.</div>` : `
+      <div class="bar-chart">
+        ${topCats.map(([cat, amt]) => {
+          const pct = totalFlex > 0 ? (amt / totalFlex) * 100 : 0;
+          return `
+          <div class="bar-row">
+            <div class="bar-label">${cat}</div>
+            <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${CAT_COLORS[cat]||'var(--gold)'}"></div></div>
+            <div class="bar-val">${fmtMoney(amt)}</div>
+          </div>`;
+        }).join('')}
+      </div>`}
+    </div>
+
+    <!-- Per person -->
+    <div class="card">
+      <div class="card-title">Per person – rörliga utgifter</div>
+      ${[['Albin',albinSpent,'var(--blue)'],['Diana',dianaSpent,'var(--purple)'],['Gemensamt',sharedSpent,'var(--gold)']].map(([name,amt,color]) => `
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <span style="font-size:0.85rem;color:${color}">${name}</span>
+          <span style="font-size:0.85rem;font-weight:600">${fmtMoney(amt)}</span>
+        </div>
+        <div class="prog-wrap">
+          <div class="prog-fill" style="width:${totalFlex>0?(amt/totalFlex)*100:0}%;background:${color}"></div>
+        </div>
+      </div>`).join('')}
+      <hr class="divider">
+      <div style="display:flex;justify-content:space-between;font-weight:600">
+        <span>Totalt</span><span>${fmtMoney(totalFlex)}</span>
+      </div>
+    </div>
+  </div>
+</div>`;
+}
+
+// ============================================================
+// SETTINGS
+// ============================================================
+function renderSettings() {
+  const { albinCC, dianaCC, albinSGI, dianaSGI, taxRefunds, workDaysPerMonth, bufferCurrent, bufferTarget } = state.settings;
+  const syncEnabled = syncCfg.enabled;
+  const hasCreds = !!(syncCfg.binId && syncCfg.apiKey);
+  return `
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div class="section-title">Inställningar</div>
+
+  <!-- ☁️ CLOUD SYNC -->
+  <div class="card" style="border-color:${syncEnabled && hasCreds ? 'var(--green)' : 'var(--gold)'}">
+    <div class="card-title" style="display:flex;align-items:center;gap:10px">
+      ☁️ Molnsynkronisering
+      <span style="font-size:0.75rem;padding:2px 8px;border-radius:20px;background:${syncEnabled && hasCreds ? 'rgba(76,175,80,0.15)' : 'rgba(201,168,76,0.15)'};color:${syncEnabled && hasCreds ? 'var(--green)' : 'var(--gold)'};font-weight:400">
+        ${syncEnabled && hasCreds ? '● Aktiv' : '○ Ej aktiv'}
+      </span>
+    </div>
+    <p style="font-size:0.82rem;color:var(--text2);margin:0 0 16px 0;line-height:1.5">
+      Aktivera molnsynk för att du och Diana ska dela samma data i realtid, på alla enheter.
+      Använder <strong style="color:var(--text)">JSONBin.io</strong> – gratis, privat, ingen inloggning krävs på din sida.
+    </p>
+
+    <div id="syncSetupSection">
+      <div class="form-row">
+        <div class="form-group" style="flex:2">
+          <label>API-nyckel (X-Master-Key från JSONBin.io)</label>
+          <input type="password" id="syncApiKeyInput" placeholder="$2a$10$…"
+            value="${syncCfg.apiKey||''}"
+            oninput="document.getElementById('syncSaveBtn').style.opacity='1'">
+        </div>
+        <div class="form-group" style="flex:2">
+          <label>Bin ID (lämna tomt för att skapa nytt)</label>
+          <input type="text" id="syncBinIdInput" placeholder="Skapas automatiskt första gången"
+            value="${syncCfg.binId||''}"
+            oninput="document.getElementById('syncSaveBtn').style.opacity='1'">
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button id="syncSaveBtn" class="btn-primary" style="opacity:${hasCreds?'1':'0.6'}"
+          onclick="saveSyncSettings()">
+          ${hasCreds ? '💾 Spara & aktivera' : '🚀 Skapa databas & aktivera'}
+        </button>
+        ${hasCreds ? `<button class="btn-secondary" onclick="forcePull()">⬇ Hämta nu</button>
+        <button class="btn-secondary" onclick="forcePush()">⬆ Skicka nu</button>` : ''}
+        ${syncEnabled ? `<button class="btn-secondary" style="color:var(--red)" onclick="disableSync()">✕ Inaktivera</button>` : ''}
+      </div>
+      ${hasCreds ? `<div style="margin-top:10px;font-size:0.75rem;color:var(--text3)">
+        Bin ID: <code style="color:var(--gold)">${syncCfg.binId}</code> — spara detta!
+        Data hämtas automatiskt vid sidladdning och synkas var 30:e sekund.
+      </div>` : ''}
+    </div>
+  </div>
+
+  <!-- CC Billing cycles -->
+  <div class="card">
+    <div class="card-title">Kreditkort – faktureringsperioder</div>
+    <div class="grid-2" style="gap:20px">
+      <div>
+        <div style="font-weight:600;color:var(--blue);margin-bottom:10px">Albin – SAS Eurobonus Mastercard</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Stängningsdatum (dag i månaden)</label>
+            <input type="number" min="1" max="31" value="${albinCC?.closeDay||26}"
+              onchange="updateCC('albin','closeDay',this.value)">
+          </div>
+          <div class="form-group">
+            <label>Fakturadatum (nästa månads dag)</label>
+            <input type="number" min="1" max="31" value="${albinCC?.chargeDay||1}"
+              onchange="updateCC('albin','chargeDay',this.value)">
+          </div>
+        </div>
+        <div style="font-size:0.78rem;color:var(--text3);margin-top:6px">
+          Transaktioner efter dag ${albinCC?.closeDay||26} tillhör nästa månads budget.
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:var(--purple);margin-bottom:10px">Diana – SAS Amex Classic</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Stängningsdatum</label>
+            <input type="number" min="1" max="31" value="${dianaCC?.closeDay||31}"
+              onchange="updateCC('diana','closeDay',this.value)">
+          </div>
+          <div class="form-group">
+            <label>Fakturadatum</label>
+            <input type="number" min="1" max="31" value="${dianaCC?.chargeDay||1}"
+              onchange="updateCC('diana','chargeDay',this.value)">
+          </div>
+        </div>
+        <div style="font-size:0.78rem;color:var(--text3);margin-top:6px">
+          Transaktioner efter dag ${dianaCC?.closeDay||31} tillhör nästa månads budget.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SGI & buffer -->
+  <div class="card">
+    <div class="card-title">SGI & Buffert</div>
+    <div class="grid-2" style="gap:20px">
+      <div>
+        <div style="font-weight:600;margin-bottom:10px">SGI (Sjukpenninggrundande inkomst)</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Albin SGI/år (kr)</label>
+            <input type="number" value="${albinSGI||480000}" onchange="updateSetting('albinSGI',this.value)">
+          </div>
+          <div class="form-group">
+            <label>Diana SGI/år (kr)</label>
+            <input type="number" value="${dianaSGI||480000}" onchange="updateSetting('dianaSGI',this.value)">
+          </div>
+        </div>
+        <div style="font-size:0.78rem;color:var(--text3);margin-top:4px">
+          Används för beräkning av VAB, sjukpenning och föräldrapenning. Max SGI 2026: 592,000 kr/år.
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:600;margin-bottom:10px">Buffert</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nuvarande buffert (kr)</label>
+            <input type="number" value="${bufferCurrent||100000}" onchange="updateSetting('bufferCurrent',this.value)">
+          </div>
+          <div class="form-group">
+            <label>Buffertmål (kr)</label>
+            <input type="number" value="${bufferTarget||150000}" onchange="updateSetting('bufferTarget',this.value)">
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:8px">
+          <label>Arbetsdagar per månad (standard)</label>
+          <input type="number" value="${workDaysPerMonth||22}" min="15" max="23" onchange="updateSetting('workDaysPerMonth',this.value)" style="width:80px">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kostförmån info -->
+  <div class="card">
+    <div class="card-title">Kostförmån (Visita/Unionen + Skatteverket 2026)</div>
+    <div style="font-size:0.85rem;color:var(--text2);line-height:1.7">
+      <div><strong style="color:var(--text)">Schablonvärde lunch/middag:</strong> 124 kr/dag (2026)</div>
+      <div><strong style="color:var(--text)">Kostavdrag (du betalar):</strong> 55 kr/dag (Visita-avtalet)</div>
+      <div><strong style="color:var(--text)">Skattepliktig förmån:</strong> 69 kr/dag (124 − 55)</div>
+      <div style="margin-top:6px;color:var(--text3);font-size:0.78rem">
+        Denna skattepliktiga förmån läggs på bruttolönen innan skattetabell 31 appliceras. Du betalar kostavdraget (55 kr/dag) från nettolönen separat. Ange antal kostförmånsdagar per person i inkomstfliken.
+      </div>
+    </div>
+  </div>
+
+  <!-- Tax refunds -->
+  <div class="card">
+    <div class="card-title">Skatteåterbäringar</div>
+    ${(taxRefunds||[]).map((tr, i) => `
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <input type="number" value="${tr.year}" style="width:70px" placeholder="År"
+        onchange="updateTaxRefund(${i},'year',this.value)">
+      <select onchange="updateTaxRefund(${i},'month',this.value)">
+        ${MONTHS_SV.map((mn,mi)=>`<option value="${mi}" ${tr.month===mi?'selected':''}>${mn}</option>`).join('')}
+      </select>
+      <div class="form-group" style="flex:1;min-width:0">
+        <label style="font-size:0.72rem">Förväntad</label>
+        <input type="number" value="${tr.expected||0}" onchange="updateTaxRefund(${i},'expected',this.value)">
+      </div>
+      <div class="form-group" style="flex:1;min-width:0">
+        <label style="font-size:0.72rem">Faktisk</label>
+        <input type="number" value="${tr.actual||0}" onchange="updateTaxRefund(${i},'actual',this.value)">
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="removeTaxRefund(${i})">✕</button>
+    </div>`).join('')}
+    <button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="addTaxRefund()">+ Lägg till skatteåterbäring</button>
+  </div>
+
+  <!-- Data management -->
+  <div class="card">
+    <div class="card-title">Data</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-ghost" onclick="exportData()">⬇ Exportera data</button>
+      <button class="btn btn-ghost" onclick="importData()">⬆ Importera data</button>
+      <button class="btn btn-danger" onclick="if(confirm('Är du säker? All data raderas.'))clearData()">🗑 Rensa all data</button>
+    </div>
+    <div style="margin-top:10px;font-size:0.78rem;color:var(--text3)">
+      Data lagras i molnet (om synk är aktiverat) och lokalt som backup. Exportera regelbundet för säkerhetskopiering.
+    </div>
+    <textarea id="importArea" style="margin-top:10px;width:100%;height:60px;display:none;font-size:0.72rem" placeholder="Klistra in exporterad data här..."></textarea>
+    <button id="importBtn" style="display:none;margin-top:6px" class="btn btn-gold" onclick="doImport()">Importera</button>
+  </div>
+</div>`;
+}
+
+function updateCC(person, field, value) {
+  if (!state.settings[person+'CC']) state.settings[person+'CC'] = {};
+  state.settings[person+'CC'][field] = parseInt(value) || 1;
+  save();
+}
+
+function updateSetting(key, value) {
+  state.settings[key] = parseNum(value);
+  save();
+}
+
+function addTaxRefund() {
+  if (!state.settings.taxRefunds) state.settings.taxRefunds = [];
+  const now = new Date();
+  state.settings.taxRefunds.push({ year: now.getFullYear(), month: 5, expected: 0, actual: 0 });
+  save(); render();
+}
+
+function removeTaxRefund(i) {
+  state.settings.taxRefunds.splice(i, 1);
+  save(); render();
+}
+
+function updateTaxRefund(i, field, value) {
+  state.settings.taxRefunds[i][field] = field === 'month' || field === 'year' ? parseInt(value) : parseNum(value);
+  save();
+}
+
+async function saveSyncSettings() {
+  const apiKey = document.getElementById('syncApiKeyInput')?.value?.trim();
+  const binId = document.getElementById('syncBinIdInput')?.value?.trim();
+  if (!apiKey) { alert('Ange din API-nyckel från JSONBin.io'); return; }
+
+  syncCfg.apiKey = apiKey;
+
+  if (!binId) {
+    // Create a new bin
+    try {
+      const newId = await createNewBin(apiKey);
+      if (!newId) { alert('Kunde inte skapa databas. Kontrollera API-nyckeln.'); return; }
+      syncCfg.binId = newId;
+      alert(`✅ Databas skapad!\n\nBin ID: ${newId}\n\nKopiera och spara detta ID — du behöver det om du loggar in på JSONBin.io. Diana behöver inte göra något, appen synkar automatiskt.`);
+    } catch(e) {
+      alert(`Fel: ${e.message}`);
+      return;
+    }
+  } else {
+    syncCfg.binId = binId;
+  }
+
+  syncCfg.enabled = true;
+  saveSyncCfg();
+  setSyncStatus('syncing', 'Ansluter…');
+  await pushToCloud();
+  startPolling();
+  render();
+}
+
+async function forcePull() {
+  await pullFromCloud(false);
+  render();
+}
+
+async function forcePush() {
+  clearTimeout(saveDebounceTimer);
+  await pushToCloud();
+}
+
+function disableSync() {
+  if (!confirm('Inaktivera molnsynk? Data finns kvar lokalt och på JSONBin.io.')) return;
+  syncCfg.enabled = false;
+  clearInterval(pollTimer);
+  saveSyncCfg();
+  setSyncStatus('unconfigured', 'Ej aktiv');
+  render();
+}
+
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url;
+  a.download = `budget-zambuhre-${new Date().toISOString().slice(0,10)}.json`;
+  a.click(); URL.revokeObjectURL(url);
+}
+
+function importData() {
+  const area = document.getElementById('importArea');
+  const btn = document.getElementById('importBtn');
+  area.style.display = area.style.display === 'none' ? 'block' : 'none';
+  btn.style.display = btn.style.display === 'none' ? 'block' : 'none';
+}
+
+function doImport() {
+  try {
+    const data = JSON.parse(document.getElementById('importArea').value);
+    Object.assign(state, data);
+    initDefaults();
+    save(); render();
+  } catch(e) { alert('Ogiltig data. Kontrollera formatet.'); }
+}
+
+function clearData() {
+  localStorage.removeItem('bz_v2');
+  location.reload();
+}
+
+// ============================================================
+// MODAL SYSTEM
+// ============================================================
+function showModal(title, body, footer) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = body;
+  document.getElementById('modalFooter').innerHTML = footer || '';
+  document.getElementById('modalOverlay').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').style.display = 'none';
+}
+
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'n' && !['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)) {
+    if (activeTab === 'transactions') openTxModal();
+  }
+});
+
+// ============================================================
+// DONUT CHART DRAWING
+// ============================================================
+function drawDonut(canvasId, segments) {
+  // segments: [{value, color}]
+  setTimeout(() => {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const cx = 60, cy = 60, r = 48, inner = 30;
+    const total = segments.reduce((s, seg) => s + seg.value, 0);
+    if (total <= 0) {
+      ctx.clearRect(0, 0, 120, 120);
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2);
+      ctx.strokeStyle = '#2a2e38'; ctx.lineWidth = 18; ctx.stroke();
+      return;
+    }
+    ctx.clearRect(0, 0, 120, 120);
+    let start = -Math.PI / 2;
+    segments.forEach(seg => {
+      if (seg.value <= 0) return;
+      const angle = (seg.value / total) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, start, start + angle);
+      ctx.closePath();
+      ctx.fillStyle = seg.color;
+      ctx.fill();
+      start += angle;
+    });
+    // Punch inner hole
+    ctx.beginPath(); ctx.arc(cx, cy, inner, 0, Math.PI*2);
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg2').trim() || '#13151a';
+    ctx.fill();
+  }, 0);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+load();
+render();
+initSync(); // Connect to cloud after local load
+
+</script>
+</body>
+</html>
